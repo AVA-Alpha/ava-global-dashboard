@@ -4,7 +4,7 @@
   "description": "",
   "main": "areachart.js",
   "scripts": {
-    "server" : "live-server --port=12667",
+    "server" : "live-server --port=12667 --host=0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

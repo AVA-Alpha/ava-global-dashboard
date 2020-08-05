@@ -41,11 +41,114 @@ flex-wrap: wrap;                    /   *  allow items to wrap  */
     width: 500px;
 }
 #information {
-    background-color: rgb(78, 78, 78);
+    background-color: rgb(255, 255, 255);
     height: 300px;
     width: 900px;
     overflow: auto;
-}
+  }
+  #information-symbol{
+      font-size: 30px;
+      font-weight: bold;
+  }
+  #information-price{
+      position: relative;
+      text-align:right;
+      font-size: 30px;
+      font-weight: bold;
+      right: 7px;
+  }
+  #information-currency{
+      text-align:left;
+      font-size: 10px;
+      font-weight: bold;
+      color: #bfbcbc;
+      left: 5px;
+      top: 8px;
+  }
+  #information-name{
+      font-size: 19px;
+      font-weight: normal;
+      color: #707070;
+  }
+  #information-chg{
+      text-align:right;
+      font-size: 14px;
+      font-weight: normal;
+      color:#bfbcbc;
+  }
+  #information-sector{
+      font-size: 15px;
+      font-weight: normal;
+      color: #9376b6;
+  }
+  #information-desc{
+      overflow: hidden;
+      font-size: 15px;
+      font-weight: normal;
+      color:#bfbcbc;
+  }
+  
+  .information-uparrow{
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid #4dd947;
+      position: absolute;
+      left: 35px;
+      top: 5px;
+  }
+  
+  .information-downarrow{
+      width: 0;
+      height: 0; 
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid red;
+      position: absolute;
+      left: 35px;
+      top: 5px;
+  }
+  
+  .metric-text{
+      font-size: 15px;
+      font-weight: normal;
+      color:#727272;
+  }
+  
+  .ava-scorebox{
+      background-color: #8044b5;
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      width: 97px;
+      height: 68px;
+      border: 0px solid #8044b5;
+      padding: 1px;
+      margin: 0px;
+  
+  }
+  
+  .avascore{
+      font-size: 30px;
+      font-weight: normal;
+      vertical-align:middle;
+      text-align:center;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .avatext{
+      float: center;
+      font-size: 12px;
+      font-weight: normal;
+      color:#ffffff;
+      align-items: center;
+      justify-content: center;
+  }
 
     
 #ic-chart {
