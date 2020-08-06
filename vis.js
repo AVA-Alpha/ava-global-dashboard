@@ -22,7 +22,7 @@ async function draw(symbol) {
 
   /* Mediator */
   var mediator = new Mediator()
-  var rootUrl = 'http://18.141.209.89:1323'
+  var rootUrl = 'https://api.avantis.app'
   if(symbol.includes('.')){
     var exchange = symbol.split('.')[1]
   }
