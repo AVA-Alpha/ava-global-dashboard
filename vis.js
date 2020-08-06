@@ -378,14 +378,5 @@ async function draw(symbol) {
 async function main() {
   draw('BBL.BK')
   drawInfo('BBL.BK')
-
-  $("form").submit(function (e) {
-    e.preventDefault();
-    var symbol = $("#symbolSearch").val()
-    drawInfo(symbol)
-    draw(symbol)
-    
-    
-  });
 }
 main()
