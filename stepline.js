@@ -206,7 +206,7 @@ class SteppedLineChart {
         return a.value - b.value;
       });
       that.bold(valueArray[0]["name"]);
-      d3.select(this).raise();
+      // d3.select(this).raise();
     }
 
     const dateParser = d3.timeParse("%Y");
