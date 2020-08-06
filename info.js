@@ -6,7 +6,7 @@ async function drawInfo(symbol) {
       else {
         var exchange = 'US'
       }
-    var rootUrl = "http://18.141.209.89:1323";
+    var rootUrl = "https://api.avantis.app";
     var authorizationToken =
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
 

@@ -123,32 +123,32 @@ async function draw(symbol) {
 
 
   /* Price */
-  // var priceDataset = []
-  // console.log(priceRawData)
-  // priceRawData = priceRawData['data']
-  // for (var i = 0; i < priceRawData.c.length; i++) {
-  //   priceDataset.push({ 'close': priceRawData.c[i], 'unixtime': priceRawData.t[i], 'volume': priceRawData.v[i] })
-  // }
-  // priceDataset = priceDataset.filter(d => (d3.timeParse('%s')(d.unixtime).getFullYear() >= startYear.getFullYear() && d3.timeParse('%s')(d.unixtime).getFullYear() <= endYear.getFullYear()))
+  var priceDataset = []
+  console.log(priceRawData)
+  priceRawData = priceRawData['data']
+  for (var i = 0; i < priceRawData.c.length; i++) {
+    priceDataset.push({ 'close': priceRawData.c[i], 'unixtime': priceRawData.t[i], 'volume': priceRawData.v[i] })
+  }
+  priceDataset = priceDataset.filter(d => (d3.timeParse('%s')(d.unixtime).getFullYear() >= startYear.getFullYear() && d3.timeParse('%s')(d.unixtime).getFullYear() <= endYear.getFullYear()))
 
-  // var accesors = [{ 'name': 'unixtime', 'accessor': d => d.unixtime },
-  // { 'name': 'close', 'accessor': d => d.close }
-  // ]
-  // var priceChart = new PriceChart({
-  //   element: "#price-chart",
-  //   dimensions: {
-  //     width: 455,
-  //     height: 284
-  //   },
-  //   dataset: priceDataset,
-  //   accesors: accesors,
-  //   nbars: 10,
-  //   startYear: startYear,
-  //   endYear: endYear,
-  //   mediator: mediator
-  // })
-  // priceChart.draw()
-  // mediator.push(priceChart)
+  var accesors = [{ 'name': 'unixtime', 'accessor': d => d.unixtime },
+  { 'name': 'close', 'accessor': d => d.close }
+  ]
+  var priceChart = new PriceChart({
+    element: "#price-chart",
+    dimensions: {
+      width: 455,
+      height: 284
+    },
+    dataset: priceDataset,
+    accesors: accesors,
+    nbars: 10,
+    startYear: startYear,
+    endYear: endYear,
+    mediator: mediator
+  })
+  priceChart.draw()
+  mediator.push(priceChart)
 
   /* StockInfo */
 
@@ -376,8 +376,8 @@ async function draw(symbol) {
   // icChart.splitData()
 }
 async function main() {
-  draw('AAV.BK')
-  drawInfo('AAV.BK')
+  draw('BBL.BK')
+  drawInfo('BBL.BK')
 
   $("form").submit(function (e) {
     e.preventDefault();
