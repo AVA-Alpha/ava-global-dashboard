@@ -176,7 +176,7 @@
             },
             data: function (params) {
                 return {
-                    symbol: params.term,
+                    text: params.term,
                     limit: 10
                 };
             },
@@ -197,7 +197,7 @@
         $('.js-example-basic-single').on('select2:select', function (e) {
             var data = e.params.data;
             draw(data['id'])
-            
+
             drawInfo(data['id'])
         });
     });
