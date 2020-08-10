@@ -42,8 +42,8 @@ async function drawInfo(symbol) {
     let infoDataSet = await promiseInfoDataSet;
     let AVAScore = await promiseScore
     
-    console.log(priceRawData["data"])
-    if (priceRawData["data"]["s"] === "no_data"){
+    console.log('info.js: Prices', priceRawData["data"])
+    if (priceRawData["data"] === null || priceRawData["data"]["s"] === "no_data"){
         var close = 'N/A';
         var closeToday = 'N/A';
         var closePrev = 'N/A';
@@ -58,21 +58,27 @@ async function drawInfo(symbol) {
         var percentChg = ((chg / closePrev) * 100).toFixed(2);
     }
     
-    console.log(infoDataSet["data"])
-    if (infoDataSet["data"] === null || jQuery.isEmptyObject(infoDataSet["data"]) ){
+    console.log('info.js: Info',infoDataSet)
+    if (infoDataSet["data"] === null || jQuery.isEmptyObject(infoDataSet["data"]) || jQuery.isEmptyObject(infoDataSet)){
         var description = 'N/A';
         var splitDesc = 'N/A';
         var exchange = 'N/A'
         var ticker = 'N/A';
+        var currency = 'N/A';
+        var name = 'N/A';
+        var sector = 'N/A';
     }
     else{
         var description = infoDataSet["data"]["description"];
         var splitDesc = description.split(".");
         var exchange = infoDataSet["data"]["exchange"].split(" ")[0];
         var ticker = infoDataSet["data"]["ticker"];
+        var currency = infoDataSet["data"]['currency']
+        var name = infoDataSet["data"]["name"]
+        var sector = infoDataSet["data"]["gsector"]
     }
     
-    console.log(AVAScore["data"])
+//     console.log(AVAScore["data"])
     if (AVAScore["data"] === null){
         var avascore = 'N/A';
         var icrScore = 'N/A';
@@ -96,7 +102,7 @@ async function drawInfo(symbol) {
 
     d3.select("#avascore").html(avascore);
 
-    d3.select("#information-currency").html(infoDataSet["data"]['currency']);
+    d3.select("#information-currency").html(currency);
     d3.select("#information-price").html(closeToday);
 
     if (chg >= 0) {
@@ -114,8 +120,8 @@ async function drawInfo(symbol) {
     d3.select("#information-symbol").html(
         exchange + ":" + ticker
     );
-    d3.select("#information-name").html(infoDataSet["data"]["name"]);
-    d3.select("#information-sector").html(infoDataSet["data"]["gsector"]);
+    d3.select("#information-name").html(name);
+    d3.select("#information-sector").html(sector);
     d3.select("#information-desc").html(
         splitDesc[0] + splitDesc[1] + splitDesc[2]
     );
