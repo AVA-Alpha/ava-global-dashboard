@@ -82,10 +82,10 @@ class Table {
         .text(function (x) {
           if (isNumber(x["data"])) {
             if (x["data"] >= 0) {
-              return d3.format(",.2f")(x["data"]);
+              return d3.format(",.2s")(x["data"]);
             }
             if (x["data"] < 0) {
-              return "(" + d3.format(",.2f")(Math.abs(x["data"])) + ")";
+              return "(" + d3.format(",.2s")(Math.abs(x["data"])) + ")";
             }
           }
           return x["data"];
