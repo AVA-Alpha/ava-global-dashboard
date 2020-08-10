@@ -12,6 +12,7 @@ class SteppedLineChart {
     // add for visualization
     this.dataset.unshift(Object.assign({}, this.dataset[0]));
     this.dataset[0]["year"] = this.dataset[0]["year"] + 1;
+    this.dataset = this.dataset.slice(0, 12)
 
     this.splitted = false;
   }
@@ -59,18 +60,19 @@ class SteppedLineChart {
       );
 
     // 4. Create scales
-
+    var dataMaps = []
+    for(var i=0; i<this.accesors.length; i++) {
+        dataMaps.push(...this.dataset.map(this.accesors[i]['accessor']))
+    }
+    dataMaps.push(0)
+    console.log(this.dataset)
+    console.log(this.accesors)
+    console.log(d3.extent(dataMaps)
+    .map((d) => d * 1))
     this.yScale = d3
       .scaleLinear()
       .domain(
-        d3
-          .extent([
-            ...this.dataset.map(this.accesors[0]["accessor"]),
-            ...this.dataset.map(this.accesors[1]["accessor"]),
-            ...this.dataset.map(this.accesors[2]["accessor"]),
-            ...this.dataset.map(this.accesors[3]["accessor"]),
-            0,
-          ])
+        d3.extent(dataMaps)
           .map((d) => d * 1)
       )
       .range([this.dimensions.boundedHeight, 0]);
