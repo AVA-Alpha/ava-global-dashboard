@@ -3,7 +3,6 @@ function sleep(ms) {
 }
 
 function isDataAvailable(dataset) {
-  console.log(dataset);
   if (dataset["data"] != null) {
     return true;
   }
