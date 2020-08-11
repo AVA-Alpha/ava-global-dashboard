@@ -293,7 +293,7 @@ async function draw(symbol) {
 
     var accesors = [
       { name: "totalAssets", accessor: (d) => d.totalAssets },
-      { name: "totalDebt", accessor: (d) => d.totalDebt },
+      { name: "totalLiabilities", accessor: (d) => d.totalLiabilities },
       { name: "totalEquity", accessor: (d) => d.totalEquity },
       { name: "cash", accessor: (d) => d.cash },
     ];
@@ -327,8 +327,8 @@ async function draw(symbol) {
       ["Total Assets"]
         .concat(bsTabledataset.map((d) => d.totalAssets))
         .map((d, i) => ({ data: d, year: thead[i] })),
-      ["Total Debt"]
-        .concat(bsTabledataset.map((d) => d.totalDebt))
+      ["Total Liability"]
+        .concat(bsTabledataset.map((d) => d.totalLiabilities))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Total Equity"]
         .concat(bsTabledataset.map((d) => d.totalEquity))
@@ -339,7 +339,7 @@ async function draw(symbol) {
     ];
     var classesDict = {
       "Total Assets": "totalAssets",
-      "Total Debt": "totalDebt",
+      "Total Liability": "totalLiabilities",
       "Total Equity": "totalEquity",
       Cash: "cash",
     };
