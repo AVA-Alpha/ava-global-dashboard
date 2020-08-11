@@ -20,7 +20,7 @@ body {
 
 .flex-row {
 display: flex;
-flex-wrap: wrap;                    /   *  allow items to wrap  */
+flex-wrap: wrap;                    
 /* justify-content: center;   */  /*  vertical  */
 
 }
@@ -324,5 +324,5 @@ tbody .text {
 }
 
 .modeBtn {
-    //background-color: rgb(108, 90, 214);
+    background-color: rgb(108, 90, 214);
 }
