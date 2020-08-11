@@ -24,10 +24,7 @@
             AVA Fundamental Dashboard
           </a>
 
-          <select class="js-example-basic-single"  name="state">
-            <option value="AAPL">(AAPL) Apple [NASDAQ]</option>
-            <option value="NFLX">(NFLX) Netflix [NASDAQ]</option>
-            <option value="ENT">ENT</option>
+          <select class="searchbox" style="width: 10%" name="state">
           </select>
     
           <!-- <form class="form-inline my-2 my-lg-0">
@@ -163,7 +160,7 @@
         return `(${state.id}) ${state.text}`;
     };
     $(document).ready(function() {
-        $(".js-example-basic-single").select2({
+        $(".searchbox").select2({
         minimumInputLength: 2,
         templateResult: formatState, //this is for append country flag.
         ajax: {
@@ -194,7 +191,7 @@
             }
         }
         });
-        $('.js-example-basic-single').on('select2:select', function (e) {
+        $('.searchbox').on('select2:select', function (e) {
             var data = e.params.data;
             draw(data['id'])
 
