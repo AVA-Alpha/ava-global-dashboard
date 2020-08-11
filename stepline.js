@@ -378,7 +378,7 @@ class SteppedLineChart {
     this.splitted = true;
     var areaGenerators = [];
     for (var i = 0; i < this.accesors.length; i++) {
-      this.highlightBoxes[i].attr("visibility", "visible");
+      //this.highlightBoxes[i].attr("visibility", "visible");
       var datamap = []
       datamap.push(...this.dataset.map(this.accesors[i]["accessor"]))
       datamap.push(0)
@@ -434,6 +434,7 @@ class SteppedLineChart {
     // var that = this
     // this.listeningRect
     //   .on('mousemove', function(d) { this._onMouseMoveSplitted(that) })
+    //that.mediator.unHighlightTime();
   }
 
   deSplitData() {
@@ -462,7 +463,7 @@ class SteppedLineChart {
         .attr("fill", d3.color(this.colors[i]).copy({ opacity: 0.8 }))
         .attr("opacity", 0.7);
     }
-    this.highlightBoxes[0].attr("visibility", "visible");
+    //this.highlightBoxes[0].attr("visibility", "visible");
   }
 
   linkTable(tableObject) {
