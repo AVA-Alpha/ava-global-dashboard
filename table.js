@@ -118,6 +118,7 @@ class Table {
     });
 
     d3.selectAll('.td-data')
+        .filter(function(x){ return (isNumber(x["growth"]) && x["growth"]!=0); })
         .append('span')
         .text(d => `Growth: ${d3.format(".02%")(d['growth'])}`)
         .style("color", function (x) {
