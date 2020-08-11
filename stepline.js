@@ -298,17 +298,19 @@ class SteppedLineChart {
         this.selected_index = 0;
       }
       var startY = this.yScale(
-        this.accesors[this.selected_index]["accessor"](
+        d3.max([0, this.accesors[this.selected_index]["accessor"](
           this.dataset.filter((d) => d.year == start.getFullYear())[0]
-        )
+        )])
       );
+
+      var endY = this.yScale(d3.min([0, this.accesors[this.selected_index]["accessor"](this.dataset.filter((d) => d.year == start.getFullYear())[0])]));
       this.highlightBoxes[0]
         .attr("x", this.xScale(start))
         // .attr("y", this.yScale(0) - (this.yScale(0) - startY))
-        .attr("y", this.yScale.range()[0] - (this.yScale.range()[0] - startY))
+        .attr("y", endY - (endY - startY))
         .attr("width", this.xScale(end) - this.xScale(start))
         // .attr("height", this.yScale(0) - startY)
-        .attr("height", this.yScale.range()[0] - startY);
+        .attr("height", endY - startY);
 
     } else {
       for (var i = 0; i < this.highlightBoxes.length; i++) {
