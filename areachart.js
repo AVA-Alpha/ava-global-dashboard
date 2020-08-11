@@ -23,7 +23,7 @@ class AreaChart {
             width: this.inputDimensions.width,
             height: this.inputDimensions.height,
             margin: {
-                top: 0, //15
+                top: 2, //15
                 right: 15, //15
                 bottom: 0, //40 
                 left: 15, //60
@@ -78,6 +78,7 @@ class AreaChart {
                 .x(d => this.xScale(this.xAccessor(d)))
                 .y0(this.yScale(0))
                 .y1(d => this.yScale(this.accesors[i]['accessor'](d)))
+                .curve(d3.curveStepBefore);
 
             this.areas[i] = this.bounds.append('path')
                 .attr("class", 'area')
