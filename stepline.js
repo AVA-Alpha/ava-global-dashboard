@@ -311,11 +311,14 @@ class SteppedLineChart {
               (this.dimensions.boundedHeight -
                 this.dimensions.boundedHeight / this.accesors.length),
         ]);
-        var startY = newYScale(this.accesors[i]["accessor"](this.dataset.filter((d) => d.year == start.getFullYear())[0])) -
+        var startY = newYScale(d3.max([this.accesors[i]["accessor"](this.dataset.filter((d) => d.year == start.getFullYear())[0]), 0])) -
         (this.dimensions.boundedHeight / this.accesors.length) * (this.accesors.length - i - 1)
 
-        var endY = this.yScale.range()[1] +
-        (this.dimensions.boundedHeight / this.accesors.length) * (i + 1)
+        // var endY = this.yScale.range()[1] +
+        // (this.dimensions.boundedHeight / this.accesors.length) * (i + 1)
+
+        var endY = newYScale(d3.min([0, this.accesors[i]["accessor"](this.dataset.filter((d) => d.year == start.getFullYear())[0])])) -
+        (this.dimensions.boundedHeight / this.accesors.length) * (this.accesors.length - i - 1)
 
         this.highlightBoxes[i]
           .attr("visibility", "visible")

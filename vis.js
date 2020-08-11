@@ -203,7 +203,7 @@ async function draw(symbol) {
     icChart.draw();
   }
 
-  /* IC AreaChart */
+  /* IC EPS */
   if (isDataAvailable(icAreaDataSet)) {
     icAreaDataSet = icAreaDataSet["data"]["financials"];
     icAreaDataSet = icAreaDataSet.filter((d) => d.year >= 2009);
