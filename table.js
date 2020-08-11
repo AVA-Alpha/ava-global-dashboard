@@ -95,7 +95,7 @@ class Table {
           var classes = `y${x["year"]} ${
             that.classesDict[d[0]["data"]]
           } table-cell`;
-          if (x["year"] == "Name") {
+          if (x["year"] == "") {
             classes += " td-name";
           } else {
             classes += " td-data";

@@ -237,7 +237,7 @@ async function draw(symbol) {
     icTableDataset.sort(function (a, b) {
       return a.year - b.year;
     });
-    thead = ["Name"].concat(icTableDataset.map((d) => d.year));
+    thead = [""].concat(icTableDataset.map((d) => d.year));
     tbody = [
       ["Revenue"]
         .concat(icTableDataset.map((d) => d.revenue))
@@ -322,7 +322,7 @@ async function draw(symbol) {
     bsTabledataset.sort(function (a, b) {
       return a.year - b.year;
     });
-    thead = ["Name"].concat(bsTabledataset.map((d) => d.year));
+    thead = [""].concat(bsTabledataset.map((d) => d.year));
     tbody = [
       ["Total Assets"]
         .concat(bsTabledataset.map((d) => d.totalAssets))
@@ -411,7 +411,7 @@ async function draw(symbol) {
     csTableDataSet.sort(function (a, b) {
       return a.year - b.year;
     });
-    thead = ["Name"].concat(csTableDataSet.map((d) => d.year));
+    thead = [""].concat(csTableDataSet.map((d) => d.year));
     tbody = [
       ["Operating"]
         .concat(csTableDataSet.map((d) => d.cashfromOperatingActivities))
