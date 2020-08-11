@@ -295,9 +295,12 @@ class SteppedLineChart {
 
     } else {
       for (var i = 0; i < this.highlightBoxes.length; i++) {
+        var datamap = []
+        datamap.push(...this.dataset.map(this.accesors[i]["accessor"]))
+        datamap.push(0)
         var newYScale = d3
           .scaleLinear()
-          .domain(d3.extent(this.dataset, this.accesors[i]["accessor"]))
+          .domain(d3.extent(datamap))
           .range([
             this.dimensions.boundedHeight,
             1.05 *
@@ -426,6 +429,8 @@ class SteppedLineChart {
         .attr("fill", d3.color(this.colors[i]).copy({ opacity: 0.8 }))
         .attr("opacity", 0.7);
     }
+
+    // that.mediator.highlightTime(dateParser(selectedYear), dateParser(endYear));
     // var that = this
     // this.listeningRect
     //   .on('mousemove', function(d) { this._onMouseMoveSplitted(that) })
