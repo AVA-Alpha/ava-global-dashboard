@@ -159,10 +159,23 @@ class SteppedLineChart {
 
     this.modeBtn = this.bounds
       .append("rect")
+      .attr('fill', 'rgb(108, 90, 214)')
       .attr("class", "modeBtn")
-      .attr("width", '20px')
-      .attr("height", '20px')
+      .attr("width", '50px')
+      .attr("height", '25px')
+      .attr("x", 0)
+      .attr("y", 0)
       .on('click', switchMode)
+      .style("cursor", "pointer"); 
+    
+    this.bounds.append("text")
+      .text('switch')
+      .style("fill", "white")
+      .attr("x", 5)
+      .attr("y", 17)
+      .on('click', switchMode)
+      .style("cursor", "pointer"); 
+
 
     var that = this;
     function switchMode() {
