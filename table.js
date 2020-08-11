@@ -88,6 +88,10 @@ class Table {
               return "(" + d3.format(",.2s")(Math.abs(x["data"])) + ")";
             }
           }
+          console.log(x["data"])
+          if(x["data"] == null){
+            return '-'
+          }
           return x["data"];
         })
         // .attr("class", x => `y${x['year']} ${d[0]['data']} table-cell`)
