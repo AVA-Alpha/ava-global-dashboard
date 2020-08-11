@@ -245,7 +245,7 @@ class StackedSteppedLineChart {
         .attr("y1", this.yScale(0))
         .attr("y2", this.yScale(this.dimensions.boundedHeight))
         .attr("stroke", "DarkGreen")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 0)
         .attr("fill", "none")
         .attr("stroke-dasharray", "3px")
         .attr("opacity", 1);
@@ -256,7 +256,7 @@ class StackedSteppedLineChart {
         .attr("y1", this.yScale(0))
         .attr("y2", this.yScale(this.dimensions.boundedHeight))
         .attr("stroke", "DarkGreen")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 0)
         .attr("fill", "none")
         .attr("stroke-dasharray", "3px")
         .attr("opacity", 1);
@@ -342,7 +342,7 @@ class StackedSteppedLineChart {
         if (i == this.selected_index) {
           this.areas[i]
             // .transition().duration(1)
-            .attr("stroke-width", 2)
+            .attr("stroke-width", 0)
             .attr("opacity", 1);
         } else {
           this.areas[i]
