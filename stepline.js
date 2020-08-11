@@ -65,10 +65,6 @@ class SteppedLineChart {
         dataMaps.push(...this.dataset.map(this.accesors[i]['accessor']))
     }
     dataMaps.push(0)
-    console.log(this.dataset)
-    console.log(this.accesors)
-    console.log(d3.extent(dataMaps)
-    .map((d) => d * 1))
     this.yScale = d3
       .scaleLinear()
       .domain(
@@ -380,9 +376,13 @@ class SteppedLineChart {
     var areaGenerators = [];
     for (var i = 0; i < this.accesors.length; i++) {
       this.highlightBoxes[i].attr("visibility", "visible");
+      var datamap = []
+      datamap.push(...this.dataset.map(this.accesors[i]["accessor"]))
+      datamap.push(0)
+      console.log(datamap)
       this.newYScale = d3
         .scaleLinear()
-        .domain(d3.extent(this.dataset, this.accesors[i]["accessor"]))
+        .domain(d3.extent(datamap))
         .range([
           this.dimensions.boundedHeight,
           1.05 *
@@ -392,9 +392,15 @@ class SteppedLineChart {
       areaGenerators[i] = d3
         .area()
         .x((d) => this.xScale(this.xAccessor(d)))
+        // .y0(
+        //   this.yScale.range()[1] +
+        //     (this.dimensions.boundedHeight / this.accesors.length) * (i + 1) 
+        // )
         .y0(
-          this.yScale.range()[1] +
-            (this.dimensions.boundedHeight / this.accesors.length) * (i + 1)
+          (d) =>
+            this.newYScale(0) -
+            (this.dimensions.boundedHeight / this.accesors.length) *
+              (this.accesors.length - i - 1)
         )
         // .y1(d => ( this.yScale(this.accesors[i]['accessor'](d)) ) - ((this.dimensions.boundedHeight / this.accesors.length) * (this.accesors.length-i-1)))
         .y1(
