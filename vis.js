@@ -298,7 +298,7 @@ async function draw(symbol) {
       //{ name: "cash", accessor: (d) => d.cash },
     ];
 
-    var bsChart = new SteppedLineChart({
+    var bsChart = new ALESteppedLineChart({
       element: "#bs-chart",
       dimensions: {
         width: 455,
