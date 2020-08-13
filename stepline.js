@@ -363,7 +363,7 @@ class SteppedLineChart {
       if (i == this.selected_index) {
         this.areas[i]
           // .transition().duration(1)
-          .attr("stroke-width", 2)
+          .attr("stroke-width", 0)
           .attr("opacity", 1);
       } else {
         this.areas[i]
