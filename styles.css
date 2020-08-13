@@ -174,12 +174,12 @@ flex-wrap: wrap;
 
 #bs-chart {
     background-color: rgb(255, 255, 255);
-    height: 250px;
+    height: 200px;
     width: 500px;
 }
 #bs-table {
     background-color: rgb(255, 255, 255);
-    height: 250px;
+    height: 200px;
     width: 900px;
     font-size: 16px;
     overflow: auto;

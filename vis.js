@@ -251,8 +251,8 @@ async function draw(symbol) {
       ["Net Income"]
         .concat(icTableDataset.map((d) => d.netIncome))
         .map((d, i) => ({ data: d, year: thead[i] })),
-      ["COGS"]
-        .concat(icTableDataset.map((d) => d.costofRevenueTotal))
+      ["EPS"]
+        .concat(icTableDataset.map((d) => d.dilutedEPS))
         .map((d, i) => ({ data: d, year: thead[i] })),
     ];
     var classesDict = {
@@ -260,7 +260,7 @@ async function draw(symbol) {
       "Gross Profit": "grossProfit",
       EBT: "netIncomeBeforeTaxes",
       "Net Income": "netIncome",
-      COGS: "costofRevenueTotal",
+      EPS: "dilutedEPS",
     };
     var icTable = new Table(
       {
@@ -295,14 +295,14 @@ async function draw(symbol) {
       { name: "totalAssets", accessor: (d) => d.totalAssets },
       { name: "totalLiabilities", accessor: (d) => d.totalLiabilities },
       { name: "totalEquity", accessor: (d) => d.totalEquity },
-      { name: "cash", accessor: (d) => d.cash },
+      //{ name: "cash", accessor: (d) => d.cash },
     ];
 
     var bsChart = new SteppedLineChart({
       element: "#bs-chart",
       dimensions: {
         width: 455,
-        height: 250,
+        height: 200,
       },
       dataset: bsChartDataset,
       accesors: accesors,
@@ -333,15 +333,15 @@ async function draw(symbol) {
       ["Total Equity"]
         .concat(bsTabledataset.map((d) => d.totalEquity))
         .map((d, i) => ({ data: d, year: thead[i] })),
-      ["Cash"]
-        .concat(bsTabledataset.map((d) => d.cash))
-        .map((d, i) => ({ data: d, year: thead[i] })),
+      // ["Cash"]
+      //   .concat(bsTabledataset.map((d) => d.cash))
+      //   .map((d, i) => ({ data: d, year: thead[i] })),
     ];
     var classesDict = {
       "Total Assets": "totalAssets",
       "Total Liability": "totalLiabilities",
       "Total Equity": "totalEquity",
-      Cash: "cash",
+      //Cash: "cash",
     };
     var bsTable = new Table(
       {
@@ -352,7 +352,7 @@ async function draw(symbol) {
         classesDict: classesDict,
         dimensions: {
           width: 910,
-          height: 300,
+          height: 200,
         },
         startYear: startYear,
         endYear: endYear,
@@ -456,8 +456,8 @@ async function draw(symbol) {
   // icChart.splitData()
 }
 async function main() {
-  drawInfo("GL.BK");
-  draw("GL.BK");
+  drawInfo("AAPL");
+  draw("AAPL");
   
   $("form").submit(function (e) {
     e.preventDefault();
