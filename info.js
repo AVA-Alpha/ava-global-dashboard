@@ -5,23 +5,13 @@ async function drawInfo(symbol) {
     } else {
         var exchange = "US";
     }
-    var expert = "blank";
-    var tag = "8.0";
+
     var rootUrl = "https://api.avantis.app";
     var authorizationToken =
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
 
     let promisepriceRawData = d3.json(
         `${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    let promiseScore = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=${expert}&tag=${tag}`,
         {
             headers: new Headers({
                 Authorization: authorizationToken,
@@ -38,28 +28,111 @@ async function drawInfo(symbol) {
         }
     );
 
+    let promiseScoreBlankV4 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=4.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    let promiseScoreBlankV5 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=5.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    let promiseScoreBlankV6 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=6.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    let promiseScoreBlankV7 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=7.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    let promiseScoreBlankV8 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=8.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    let promiseScoreBlankV9 = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=blank&tag=9.0`,
+        {
+            headers: new Headers({
+                Authorization: authorizationToken,
+            }),
+        }
+    );
+
+    function getScoreAPI(symbol, ScoreAPI, multiplier, decimalpalces) {
+        var scoreObject = Object.keys(ScoreAPI).map((key) => ScoreAPI[key]);
+        var name = symbol.split(".")[0];
+        var score = null;
+
+        for (var i = 0; i < scoreObject.length; i++) {
+            if (scoreObject[i].Symbol == name) {
+                var scoreData = scoreObject[i].Data
+                console.log("info.js scoreData: ", scoreData );
+                for (var j = 0; j < scoreData.length; j++) {
+                    console.log("info.js scoreData[j].Key: ", scoreData[j].Key);
+                    if (scoreData[j].Key === 'scores') {
+                        var scoreValue = scoreData[j].Value;
+                        console.log("info.js scoreValue: ", scoreValue);
+                        score = scoreValue[scoreValue.length - 1];
+                        score = (score * multiplier).toFixed(decimalpalces)
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return score;
+    }
+
+
     let priceRawData = await promisepriceRawData;
     let infoDataSet = await promiseInfoDataSet;
-    let AVAScore = await promiseScore;
+
+    let ScoreBlankV4 = await promiseScoreBlankV4;
+    let ScoreBlankV5 = await promiseScoreBlankV5;
+    let ScoreBlankV6 = await promiseScoreBlankV6;
+    let ScoreBlankV7 = await promiseScoreBlankV7;
+    let ScoreBlankV8 = await promiseScoreBlankV8;
+    let ScoreBlankV9 = await promiseScoreBlankV9;
+
+    let AVAScore = {
+        blankV4: getScoreAPI(symbol, ScoreBlankV4, 100, 0),
+        blankV5: getScoreAPI(symbol, ScoreBlankV5, 100, 0),
+        blankV6: getScoreAPI(symbol, ScoreBlankV6, 100, 0),
+        blankV7: getScoreAPI(symbol, ScoreBlankV7, 100, 0),
+        blankV8: getScoreAPI(symbol, ScoreBlankV8, 100, 0),
+        blankV9: getScoreAPI(symbol, ScoreBlankV9, 10, 2)
+    };
+
 
     // console.log("info.js: Prices", priceRawData["data"]);
     // console.log("info.js: Score", AVAScore);
 
-    var scores = Object.keys(AVAScore).map((key) => AVAScore[key]);
-    var name = symbol.split(".")[0];
-    var score = null;
-    var dateOfScore = null;
-    for (var i = 0; i < scores.length; i++) {
-        if (scores[i].Symbol == name) {
-            score = scores[i].Data[2]['Value'];
-            score = score[score.length - 1].toFixed(2);
-            dateOfScore = scores[i].Data[3]['Value'];
-            dateOfScore = dateOfScore[dateOfScore.length - 1];
-            break;
-        }
-    }
+    console.log("info.js AVAScore: ", AVAScore);
 
-    console.log("info.js result: ", score, dateOfScore);
 
     if (
         priceRawData["data"] === null ||
@@ -102,7 +175,7 @@ async function drawInfo(symbol) {
     }
 
     //     console.log(AVAScore["data"])
-    if (score === null) {
+    if (AVAScore === null) {
         var avascore = "N/A";
         var icrScore = "N/A";
         var laScore = "N/A";
@@ -110,12 +183,12 @@ async function drawInfo(symbol) {
         var revScore = "N/A";
         var valuationScore = "N/A";
     } else {
-        var avascore = score;
-        var icrScore = Math.floor(Math.random() * (100 - 0 + 1) + 0);
-        var laScore = Math.floor(Math.random() * (100 - 0 + 1) + 0);
-        var ocqScore = Math.floor(Math.random() * (100 - 0 + 1) + 0);
-        var revScore = Math.floor(Math.random() * (100 - 0 + 1) + 0);
-        var valuationScore = Math.floor(Math.random() * (100 - 0 + 1) + 0);
+        var icrScore = AVAScore.blankV4;
+        var laScore = AVAScore.blankV5;
+        var ocqScore = AVAScore.blankV6;
+        var revScore = AVAScore.blankV7;
+        var valuationScore = AVAScore.blankV8;
+        var avascore = AVAScore.blankV9;
     }
 
     d3.select("#avascore").html(avascore);
