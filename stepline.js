@@ -486,7 +486,6 @@ class SteppedLineChart {
         .attr("opacity", 0.7);
     }
     //this.highlightBoxes[0].attr("visibility", "visible");
-    console.log(onMouseMove)
     this.listeningRect
       .on('mousemove', onMouseMove)
   }
