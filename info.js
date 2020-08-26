@@ -27,111 +27,34 @@ async function drawInfo(symbol) {
             }),
         }
     );
-
-    let promiseScoreBlankV4 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=4.0`,
+    
+    let promiseScore = d3.json(
+        `http://18.141.209.89:1324/api/find?expert=yong&tag=1.0&symbol=${symbol.split(".")[0]}`,
         {
             headers: new Headers({
                 Authorization: authorizationToken,
             }),
         }
     );
-
-    let promiseScoreBlankV5 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=5.0`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    let promiseScoreBlankV6 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=6.0`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    let promiseScoreBlankV7 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=7.0`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    let promiseScoreBlankV8 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=8.0`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    let promiseScoreBlankV9 = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=blank&tag=9.0`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
-
-    function getScoreAPI(symbol, ScoreAPI, multiplier, decimalpalces) {
-        var scoreObject = Object.keys(ScoreAPI).map((key) => ScoreAPI[key]);
-        var name = symbol.split(".")[0];
-        var score = null;
-
-        for (var i = 0; i < scoreObject.length; i++) {
-            if (scoreObject[i].Symbol == name) {
-                var scoreData = scoreObject[i].Data
-                console.log("info.js scoreData: ", scoreData );
-                for (var j = 0; j < scoreData.length; j++) {
-                    console.log("info.js scoreData[j].Key: ", scoreData[j].Key);
-                    if (scoreData[j].Key === 'scores') {
-                        var scoreValue = scoreData[j].Value;
-                        console.log("info.js scoreValue: ", scoreValue);
-                        score = scoreValue[scoreValue.length - 1];
-                        score = (score * multiplier).toFixed(decimalpalces)
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return score;
-    }
 
 
     let priceRawData = await promisepriceRawData;
     let infoDataSet = await promiseInfoDataSet;
-
-    let ScoreBlankV4 = await promiseScoreBlankV4;
-    let ScoreBlankV5 = await promiseScoreBlankV5;
-    let ScoreBlankV6 = await promiseScoreBlankV6;
-    let ScoreBlankV7 = await promiseScoreBlankV7;
-    let ScoreBlankV8 = await promiseScoreBlankV8;
-    let ScoreBlankV9 = await promiseScoreBlankV9;
-
-    let AVAScore = {
-        blankV4: getScoreAPI(symbol, ScoreBlankV4, 100, 0),
-        blankV5: getScoreAPI(symbol, ScoreBlankV5, 100, 0),
-        blankV6: getScoreAPI(symbol, ScoreBlankV6, 100, 0),
-        blankV7: getScoreAPI(symbol, ScoreBlankV7, 100, 0),
-        blankV8: getScoreAPI(symbol, ScoreBlankV8, 100, 0),
-        blankV9: getScoreAPI(symbol, ScoreBlankV9, 10, 2)
-    };
-
-
-    // console.log("info.js: Prices", priceRawData["data"]);
-    // console.log("info.js: Score", AVAScore);
-
-    console.log("info.js AVAScore: ", AVAScore);
+    let scoreFromAPI = await promiseScore;
+    
+    var factorNames = scoreFromAPI[0].Data[0].Value;
+    var factorScores = scoreFromAPI[0].Data[1].Value;
+    
+    var AVAScores = (factorScores[0]* 10).toFixed(2)
+    var icrScore =  (factorScores[1]* 100).toFixed(0)
+    var laScore =   (factorScores[2]* 100).toFixed(0)
+    var ocqScore =  (factorScores[3]* 100).toFixed(0)
+    var revScore =  (factorScores[4]* 100).toFixed(0)
+    var valuationScore = (factorScores[5]* 100).toFixed(0)
+    
+    console.log("info.js: factorNames", factorNames);
+    console.log("info.js: factorScores", factorScores);
+    console.log("info.js: AVAScore", AVAScores);
 
 
     if (
@@ -174,24 +97,8 @@ async function drawInfo(symbol) {
         var sector = infoDataSet["data"]["gsector"];
     }
 
-    //     console.log(AVAScore["data"])
-    if (AVAScore === null) {
-        var avascore = "N/A";
-        var icrScore = "N/A";
-        var laScore = "N/A";
-        var ocqScore = "N/A";
-        var revScore = "N/A";
-        var valuationScore = "N/A";
-    } else {
-        var icrScore = AVAScore.blankV4;
-        var laScore = AVAScore.blankV5;
-        var ocqScore = AVAScore.blankV6;
-        var revScore = AVAScore.blankV7;
-        var valuationScore = AVAScore.blankV8;
-        var avascore = AVAScore.blankV9;
-    }
 
-    d3.select("#avascore").html(avascore);
+    d3.select("#avascore").html(AVAScores);
 
     d3.select("#information-currency").html(currency);
     d3.select("#information-price").html(closeToday);
@@ -215,11 +122,11 @@ async function drawInfo(symbol) {
         splitDesc[0] + splitDesc[1] + splitDesc[2]
     );
 
-    d3.select("#icr-text").html("Metric A (" + icrScore + ")");
-    d3.select("#la-text").html("Metric B (" + laScore + ")");
-    d3.select("#ocq-text").html("Metric C (" + ocqScore + ")");
-    d3.select("#rev-text").html("Metric D (" + revScore + ")");
-    d3.select("#valuation-text").html("Metric E (" + valuationScore + ")");
+    d3.select("#icr-text").html("Interest Coverage Ratio (" + icrScore + ")");
+    d3.select("#la-text").html("Liquid Assets(" + laScore + ")");
+    d3.select("#ocq-text").html("Operating Cashflow Quality  (" + ocqScore + ")");
+    d3.select("#rev-text").html("Revenue (" + revScore + ")");
+    d3.select("#valuation-text").html("Valuation (" + valuationScore + ")");
 
     // bar chart
     chartOption = {
