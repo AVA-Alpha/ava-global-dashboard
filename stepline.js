@@ -184,7 +184,7 @@ class SteppedLineChart {
         that.splitData()
       }
       else{
-        that.deSplitData()
+        that.deSplitData(onMouseMove)
       }
     }
     function onMouseMove() {
@@ -380,8 +380,8 @@ class SteppedLineChart {
     }
   }
   _onMouseMoveSplitted(that) {
-    that.focus.style("display", null);
-    const mousePosition = d3.mouse(this);
+    this.focus.style("display", null);
+    const mousePosition = d3.mouse(d3.event.currentTarget);
     const hoveredDate = that.xScale.invert(mousePosition[0]);
     var selectedYear = hoveredDate.getFullYear();
     var endYear = selectedYear + 1;
@@ -391,12 +391,12 @@ class SteppedLineChart {
 
     // const hoveredValue = that.yScale.invert(mousePosition[1])
     var selIdx = Math.floor(
-      (mousePosition[1] - that.yScale.range()[1]) / this.accesors.length
+      that.accesors.length - ((that.yScale.range()[0] - mousePosition[1]) / (that.yScale.range()[0]/that.accesors.length))
     );
-    that.bold(valueArray[selIdx]["name"]);
-    d3.select(this).raise();
+    that.bold(that.accesors[selIdx]["name"]);
+    d3.select(that).raise();
   }
-  splitData() {
+  splitData(that) {
     this.splitted = true;
     var areaGenerators = [];
     for (var i = 0; i < this.accesors.length; i++) {
@@ -453,13 +453,13 @@ class SteppedLineChart {
     }
 
     // that.mediator.highlightTime(dateParser(selectedYear), dateParser(endYear));
-    // var that = this
-    // this.listeningRect
-    //   .on('mousemove', function(d) { this._onMouseMoveSplitted(that) })
+    var that = this
+    this.listeningRect
+      .on('mousemove', function(d) { that._onMouseMoveSplitted(that) })
     //that.mediator.unHighlightTime();
   }
 
-  deSplitData() {
+  deSplitData(onMouseMove) {
     this.splitted = false;
     var areaGenerators = [];
     for (var i = 0; i < this.accesors.length; i++) {
@@ -486,6 +486,9 @@ class SteppedLineChart {
         .attr("opacity", 0.7);
     }
     //this.highlightBoxes[0].attr("visibility", "visible");
+    console.log(onMouseMove)
+    this.listeningRect
+      .on('mousemove', onMouseMove)
   }
 
   linkTable(tableObject) {
