@@ -41,10 +41,23 @@ async function drawInfo(symbol) {
     let priceRawData = await promisepriceRawData;
     let infoDataSet = await promiseInfoDataSet;
     let scoreFromAPI = await promiseScore;
+    if (scoreFromAPI[0] != null){
+        var factorNames = scoreFromAPI[0].Data[0].Value;
+        var factorScores = scoreFromAPI[0].Data[1].Value;
+
+        console.log("info.js: factorNames", factorNames);
+        console.log("info.js: factorScores", factorScores);
+        
+    }
+    else{
+        var factorNames = ['N/A','N/A','N/A','N/A','N/A','N/A'];
+        var factorScores = [0,0,0,0,0,0];
+
+        console.log("info.js: factorNames", factorNames);
+        console.log("info.js: factorScores", factorScores);
+    }
     
-    var factorNames = scoreFromAPI[0].Data[0].Value;
-    var factorScores = scoreFromAPI[0].Data[1].Value;
-    
+
     var AVAScores = (factorScores[0]* 10).toFixed(2)
     var icrScore =  (factorScores[1]* 100).toFixed(0)
     var laScore =   (factorScores[2]* 100).toFixed(0)
@@ -52,11 +65,8 @@ async function drawInfo(symbol) {
     var revScore =  (factorScores[4]* 100).toFixed(0)
     var valuationScore = (factorScores[5]* 100).toFixed(0)
     
-    console.log("info.js: factorNames", factorNames);
-    console.log("info.js: factorScores", factorScores);
     console.log("info.js: AVAScore", AVAScores);
-
-
+    
     if (
         priceRawData["data"] === null ||
         priceRawData["data"]["s"] === "no_data"
