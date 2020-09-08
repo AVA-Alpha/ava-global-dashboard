@@ -10,14 +10,10 @@ async function drawInfo(symbol) {
     var authorizationToken =
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
 
-    let promisepriceRawData = d3.json(
-        `${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
+    let promisepriceRawData = d3.csv(
+    `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
     );
+
 
     let promiseInfoDataSet = d3.json(
         `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
@@ -39,6 +35,7 @@ async function drawInfo(symbol) {
 
 
     let priceRawData = await promisepriceRawData;
+    
     let infoDataSet = await promiseInfoDataSet;
     let scoreFromAPI = await promiseScore;
     if (scoreFromAPI[0] != null){
@@ -68,8 +65,8 @@ async function drawInfo(symbol) {
     console.log("info.js: AVAScore", AVAScores);
     
     if (
-        priceRawData["data"] === null ||
-        priceRawData["data"]["s"] === "no_data"
+        priceRawData == null ||
+        priceRawData.length < 1
     ) {
         var close = "N/A";
         var closeToday = "N/A";
@@ -77,9 +74,12 @@ async function drawInfo(symbol) {
         var chg = "N/A";
         var percentChg = "N/A";
     } else {
-        var close = priceRawData["data"]["c"];
-        var closeToday = close[close.length - 1];
-        var closePrev = close[close.length - 2];
+        var close = priceRawData;
+//         console.log("info.js: closeToday", close[close.length - 2]);
+        var closeToday = close[close.length - 2]['Close'];
+//         console.log("info.js: closeToday", closeToday);
+        var closePrev = close[close.length - 3]['Close'];
+//         console.log("info.js: closePrev", closePrev);
         var chg = (closeToday - closePrev).toFixed(2);
         var percentChg = ((chg / closePrev) * 100).toFixed(2);
     }
