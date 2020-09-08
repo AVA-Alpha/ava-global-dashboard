@@ -33,6 +33,14 @@ async function draw(symbol) {
   } else {
     var exchange = "US";
   }
+
+  var priceSymbol
+  if (symbol.includes(".")) {
+    priceSymbol = symbol
+  } else {
+    priceSymbol = priceSymbol + '.US'
+  }
+
   var authorizationToken =
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
 
@@ -55,13 +63,14 @@ async function draw(symbol) {
   // let promisecsChartDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
   // let promisecsTableDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
 
-  let promisepriceRawData = d3.json(
-    `${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
-    {
-      headers: new Headers({
-        Authorization: authorizationToken,
-      }),
-    }
+  let promisepriceRawData = d3.csv(
+    //`${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
+    `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
+    // {
+    //   headers: new Headers({
+    //     Authorization: authorizationToken,
+    //   }),
+    // }
   );
 
   let promiseicChartRaw = d3.json(
@@ -133,23 +142,26 @@ async function draw(symbol) {
   let csTableDataSet = await promisecsTableDataSet;
 
   /* Price */
-  if (isDataAvailable(priceRawData)) {
+  // if (isDataAvailable(priceRawData)) {
+  if(priceRawData!=NaN) {
     var priceDataset = [];
-    console.log(priceRawData);
-    priceRawData = priceRawData["data"];
-    for (var i = 0; i < priceRawData.c.length; i++) {
+    // priceRawData = priceRawData["data"];
+    for (var i = 0; i < priceRawData.length-1; i++) {
       priceDataset.push({
-        close: priceRawData.c[i],
-        unixtime: priceRawData.t[i],
-        volume: priceRawData.v[i],
+        close: parseFloat(priceRawData[i].Adjusted_close),
+        unixtime: new Date(priceRawData[i].Date).getTime() / 1000,
+        date: priceRawData[i].Date,
+        volume: priceRawData[i].Volume,
       });
     }
+    console.log(priceDataset)
     priceDataset = priceDataset.filter(
       (d) =>
         d3.timeParse("%s")(d.unixtime).getFullYear() >=
           startYear.getFullYear() &&
         d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()
     );
+    console.log(priceDataset)
 
     var accesors = [
       { name: "unixtime", accessor: (d) => d.unixtime },

@@ -16,6 +16,8 @@ class PriceChart {
 
     async draw(symbol) {
 
+        var table = d3.select(this.element);
+
         this.dateParser = d3.timeParse("%s")
         this.xAccessor = d => this.dateParser(d.unixtime);
         this.yAccessor = this.accesors.filter(d => d.name == 'close')[0]['accessor'];
