@@ -456,8 +456,8 @@ async function draw(symbol) {
   // icChart.splitData()
 }
 async function main() {
-  drawInfo("AAPL");
-  draw("AAPL");
+  drawInfo("ADVANC.bk");
+  draw("ADVANC.bk");
   
   $("form").submit(function (e) {
     e.preventDefault();
