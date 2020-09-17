@@ -220,7 +220,7 @@ async function draw(symbol) {
     icAreaDataSet = icAreaDataSet["data"]["financials"];
     icAreaDataSet = icAreaDataSet.filter((d) => d.year >= 2009);
     var accesors = [
-      { name: "costofRevenueTotal", accessor: (d) => d.costofRevenueTotal },
+      { name: "EPS", accessor: (d) => d.dilutedEPS },
     ];
     var colors = ["#8044b5"];
     var icAreaChart = new AreaChart({
