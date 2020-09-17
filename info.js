@@ -14,7 +14,6 @@ async function drawInfo(symbol) {
     `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
     );
 
-
     let promiseInfoDataSet = d3.json(
         `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
         {
@@ -25,7 +24,7 @@ async function drawInfo(symbol) {
     );
     
     let promiseScore = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=yong&tag=1.0&symbol=${symbol.split(".")[0]}`,
+        `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
         {
             headers: new Headers({
                 Authorization: authorizationToken,
@@ -35,9 +34,77 @@ async function drawInfo(symbol) {
 
 
     let priceRawData = await promisepriceRawData;
-    
     let infoDataSet = await promiseInfoDataSet;
     let scoreFromAPI = await promiseScore;
+    
+    console.log("info.js: priceRawData",symbol.split(".")[0],exchange, priceRawData);
+    console.log("info.js: infoDataSet",symbol.split(".")[0],exchange, infoDataSet);
+    console.log("info.js: scoreFromAPI",symbol.split(".")[0],exchange, scoreFromAPI);
+    
+    /*UPDATE INFO*/
+    if (
+        infoDataSet["data"] === null ||
+        jQuery.isEmptyObject(infoDataSet["data"]) ||
+        jQuery.isEmptyObject(infoDataSet)
+    ) {
+        var description = "N/A";
+        var splitDesc = "N/A";
+        var exchange = "N/A";
+        var ticker = "N/A";
+        var currency = "N/A";
+        var name = "N/A";
+        var sector = "N/A";
+    } else {
+        var description = infoDataSet["data"]["description"];
+        var splitDesc = description.split(".");
+        var exchange = infoDataSet["data"]["exchange"].split(" ")[0];
+        var ticker = infoDataSet["data"]["ticker"];
+        var currency = infoDataSet["data"]["currency"];
+        var name = infoDataSet["data"]["name"];
+        var sector = infoDataSet["data"]["gsector"];
+    }
+    d3.select("#information-currency").html(currency);
+    d3.select("#information-symbol").html(exchange + ":" + ticker);
+    d3.select("#information-name").html(name);
+    d3.select("#information-sector").html(sector);
+    d3.select("#information-desc").html(
+        splitDesc[0] + splitDesc[1] + splitDesc[2]
+    );
+    
+    /*UPDATE PRICE*/
+    if (
+        priceRawData == null ||
+        priceRawData.length < 2
+    ) {
+        var close = "N/A";
+        var closeToday = "N/A";
+        var closePrev = "N/A";
+        var chg = "N/A";
+        var percentChg = "N/A";
+    } else {
+        var close = priceRawData;
+        var closeToday = close[close.length - 2]['Close'];
+        var closePrev = close[close.length - 3]['Close'];
+        var chg = (closeToday - closePrev).toFixed(2);
+        var percentChg = ((chg / closePrev) * 100).toFixed(2);
+    }
+    
+    d3.select("#information-price").html(closeToday);
+    if (chg >= 0) {
+        $("#information-chg-arrow")
+            .removeClass("information-downarrow")
+            .addClass("information-uparrow");
+        d3.select("#information-chg").html("+" + chg + "|" + percentChg + "%");
+    } else {
+        $("#information-chg-arrow")
+            .removeClass("information-uparrow")
+            .addClass("information-downarrow");
+        d3.select("#information-chg").html(chg + "|" + percentChg + "%");
+    }
+    
+
+    /*UPDATE SCORE*/
+    
     if (scoreFromAPI[0] != null){
         var factorNames = scoreFromAPI[0].Data[0].Value;
         var factorScores = scoreFromAPI[0].Data[1].Value;
@@ -64,73 +131,11 @@ async function drawInfo(symbol) {
     
     console.log("info.js: AVAScore", AVAScores);
     
-    if (
-        priceRawData == null ||
-        priceRawData.length < 1
-    ) {
-        var close = "N/A";
-        var closeToday = "N/A";
-        var closePrev = "N/A";
-        var chg = "N/A";
-        var percentChg = "N/A";
-    } else {
-        var close = priceRawData;
-//         console.log("info.js: closeToday", close[close.length - 2]);
-        var closeToday = close[close.length - 2]['Close'];
-//         console.log("info.js: closeToday", closeToday);
-        var closePrev = close[close.length - 3]['Close'];
-//         console.log("info.js: closePrev", closePrev);
-        var chg = (closeToday - closePrev).toFixed(2);
-        var percentChg = ((chg / closePrev) * 100).toFixed(2);
-    }
 
-    console.log("info.js: Info", infoDataSet);
-    if (
-        infoDataSet["data"] === null ||
-        jQuery.isEmptyObject(infoDataSet["data"]) ||
-        jQuery.isEmptyObject(infoDataSet)
-    ) {
-        var description = "N/A";
-        var splitDesc = "N/A";
-        var exchange = "N/A";
-        var ticker = "N/A";
-        var currency = "N/A";
-        var name = "N/A";
-        var sector = "N/A";
-    } else {
-        var description = infoDataSet["data"]["description"];
-        var splitDesc = description.split(".");
-        var exchange = infoDataSet["data"]["exchange"].split(" ")[0];
-        var ticker = infoDataSet["data"]["ticker"];
-        var currency = infoDataSet["data"]["currency"];
-        var name = infoDataSet["data"]["name"];
-        var sector = infoDataSet["data"]["gsector"];
-    }
+
 
 
     d3.select("#avascore").html(AVAScores);
-
-    d3.select("#information-currency").html(currency);
-    d3.select("#information-price").html(closeToday);
-
-    if (chg >= 0) {
-        $("#information-chg-arrow")
-            .removeClass("information-downarrow")
-            .addClass("information-uparrow");
-        d3.select("#information-chg").html("+" + chg + "|" + percentChg + "%");
-    } else {
-        $("#information-chg-arrow")
-            .removeClass("information-uparrow")
-            .addClass("information-downarrow");
-        d3.select("#information-chg").html(chg + "|" + percentChg + "%");
-    }
-
-    d3.select("#information-symbol").html(exchange + ":" + ticker);
-    d3.select("#information-name").html(name);
-    d3.select("#information-sector").html(sector);
-    d3.select("#information-desc").html(
-        splitDesc[0] + splitDesc[1] + splitDesc[2]
-    );
 
     d3.select("#icr-text").html("Interest Coverage Ratio (" + icrScore + ")");
     d3.select("#la-text").html("Liquid Assets(" + laScore + ")");
