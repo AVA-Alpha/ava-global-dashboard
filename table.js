@@ -1,6 +1,7 @@
 class Table {
-  constructor(opts, chartObj) {
+  constructor(opts, chartObj, altChart=null) {
     this.chartObj = chartObj;
+    this.altChart = altChart;
     this.element = opts.element;
     this.mediator = opts.mediator;
     this.dataset = opts.dataset;
@@ -146,12 +147,18 @@ class Table {
       })
       .on("mouseover", function (d) {
         that.chartObj.bold(this.classList[1]);
+        if(that.altChart!=null){
+          that.altChart.bold(this.classList[1]);
+        }
         that.mediator.highlightTime(dateParser(d.year), dateParser(d.year + 1));
       })
       .on("mouseleave", (d) => {
         // this.highlightTime(dateParser(d.year))
         that.mediator.unHighlightTime();
         this.chartObj.unbold();
+        if(this.altChart!=null){
+          this.altChart.unbold();
+        }
       });
   }
 

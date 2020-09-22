@@ -1,4 +1,4 @@
-async function drawInfo(symbol) {
+async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
     console.log(`drawing info ${symbol}`);
     if (symbol.includes(".")) {
         var exchange = symbol.split(".")[1];
@@ -6,40 +6,40 @@ async function drawInfo(symbol) {
         var exchange = "US";
     }
 
-    var rootUrl = "https://api.avantis.app";
-    var authorizationToken =
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
+    // var rootUrl = "https://api.avantis.app";
+    // var authorizationToken =
+    //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
 
-    let promisepriceRawData = d3.csv(
-    `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
-    );
+    // let promisepriceRawData = d3.csv(
+    // `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
+    // );
 
-    let promiseInfoDataSet = d3.json(
-        `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
+    // let promiseInfoDataSet = d3.json(
+    //     `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
+    //     {
+    //         headers: new Headers({
+    //             Authorization: authorizationToken,
+    //         }),
+    //     }
+    // );
     
-    let promiseScore = d3.json(
-        `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
-        {
-            headers: new Headers({
-                Authorization: authorizationToken,
-            }),
-        }
-    );
+    // let promiseScore = d3.json(
+    //     `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
+    //     {
+    //         headers: new Headers({
+    //             Authorization: authorizationToken,
+    //         }),
+    //     }
+    // );
 
 
-    let priceRawData = await promisepriceRawData;
-    let infoDataSet = await promiseInfoDataSet;
-    let scoreFromAPI = await promiseScore;
+    // let priceRawData = await promisepriceRawData;
+    // let infoDataSet = await promiseInfoDataSet;
+    // let scoreFromAPI = await promiseScore;
     
-    console.log("info.js: priceRawData",symbol.split(".")[0],exchange, priceRawData);
-    console.log("info.js: infoDataSet",symbol.split(".")[0],exchange, infoDataSet);
-    console.log("info.js: scoreFromAPI",symbol.split(".")[0],exchange, scoreFromAPI);
+    // console.log("info.js: priceRawData",symbol.split(".")[0],exchange, priceRawData);
+    // console.log("info.js: infoDataSet",symbol.split(".")[0],exchange, infoDataSet);
+    // console.log("info.js: scoreFromAPI",symbol.split(".")[0],exchange, scoreFromAPI);
     
     /*UPDATE INFO*/
     if (

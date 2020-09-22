@@ -186,25 +186,28 @@ class AreaChart {
   }
 
   bold(name) {
+    console.log(name)
+    console.log(this.accesors)
     var selected_index = this.accesors.findIndex((x) => x.name === name);
+    console.log(this.areas[0])
     for (var i = 0; i < this.areas.length; i++) {
       if (i == selected_index) {
         this.areas[i]
           // .transition().duration(1)
-          .attr("stroke-width", 2)
-          .attr("opacity", 1);
+          .attr("stroke-width", 0)
+          .style("opacity", 1);
       } else {
         this.areas[i]
           // .transition().duration(1)
           .attr("stroke-width", 0)
-          .attr("opacity", 0.2);
+          .style("opacity", 0.2);
       }
     }
   }
 
   unbold() {
     for (var i = 0; i < this.areas.length; i++) {
-      this.areas[i].attr("stroke-width", 0).attr("opacity", 0.8);
+      this.areas[i].style("stroke-width", 0).style("opacity", 0.8);
     }
   }
 }

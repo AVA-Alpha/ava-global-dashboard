@@ -10,6 +10,8 @@ function isDataAvailable(dataset) {
 }
 async function draw(symbol) {
   console.log(`drawing.. ${symbol}`);
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("content").style.display = "none";
   /* Config */
   const dimensions = {
     chart: {
@@ -71,7 +73,7 @@ async function draw(symbol) {
     //     Authorization: authorizationToken,
     //   }),
     // }
-  );
+  ,);
 
   let promiseicChartRaw = d3.json(
     `${rootUrl}/api/financials/ic/annual?symbol=${symbol}&exchange=${exchange}`,
@@ -132,18 +134,93 @@ async function draw(symbol) {
     }
   );
 
-  let priceRawData = await promisepriceRawData;
-  let icChartRaw = await promiseicChartRaw;
-  let icAreaDataSet = await promiseicAreaDataSet;
-  let icTableraw = await promiseicTableraw;
-  let bsChartRaw = await promisebsChartRaw;
-  let bsTableRaw = await promisebsTableRaw;
-  let csChartDataSet = await promisecsChartDataSet;
-  let csTableDataSet = await promisecsTableDataSet;
+  let promiseInfoDataSet = d3.json(
+      `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
+      {
+          headers: new Headers({
+              Authorization: authorizationToken,
+          }),
+      }
+  );
+  
+  let promiseScore = d3.json(
+      `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
+      {
+          headers: new Headers({
+              Authorization: authorizationToken,
+          }),
+      }
+  );
+  try {
+    var priceRawData = await promisepriceRawData;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var icChartRaw = await promiseicChartRaw;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var icAreaDataSet = await promiseicAreaDataSet;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var icTableraw = await promiseicTableraw;
+  } catch (e) {
+    console.log(e)
+  }
+  
+  try {
+    var bsChartRaw = await promisebsChartRaw;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var bsTableRaw = await promisebsTableRaw;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var csChartDataSet = await promisecsChartDataSet;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var csTableDataSet = await promisecsTableDataSet;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var infoDataSet = await promiseInfoDataSet;
+  } catch (e) {
+    console.log(e)
+  }
+
+  try {
+    var scoreFromAPI = await promiseScore;
+  } catch (e) {
+    console.log(e)
+  }
+  
+  
+
+  document.getElementById("content").style.display = "block";
+  document.getElementById("loader").style.display = "none";
+
+  drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI);
 
   /* Price */
   // if (isDataAvailable(priceRawData)) {
-  if(priceRawData!=NaN) {
+  if(priceRawData!=null) {
     var priceDataset = [];
     // priceRawData = priceRawData["data"];
     for (var i = 0; i < priceRawData.length-1; i++) {
@@ -154,14 +231,12 @@ async function draw(symbol) {
         volume: priceRawData[i].Volume,
       });
     }
-    console.log(priceDataset)
     priceDataset = priceDataset.filter(
       (d) =>
         d3.timeParse("%s")(d.unixtime).getFullYear() >=
           startYear.getFullYear() &&
-        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()
+        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()-1
     );
-    console.log(priceDataset)
 
     var accesors = [
       { name: "unixtime", accessor: (d) => d.unixtime },
@@ -182,6 +257,23 @@ async function draw(symbol) {
     });
     priceChart.draw();
     mediator.push(priceChart);
+  } else{
+    let tmp = d3.select("#price-chart");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 455)
+        .attr("height", 284);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${455/2}px, ${284/2}px)`
+      )
+      .text("No Price Data Available");
   }
 
   /* StockInfo */
@@ -213,14 +305,33 @@ async function draw(symbol) {
     });
     mediator.push(icChart);
     icChart.draw();
+  } else{
+    let tmp = d3.select("#ic-chart");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 455)
+        .attr("height", 250);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${455/2}px, ${250/2}px)`
+      )
+      .text("No IC Data Available");
   }
+
+
 
   /* IC EPS */
   if (isDataAvailable(icAreaDataSet)) {
     icAreaDataSet = icAreaDataSet["data"]["financials"];
     icAreaDataSet = icAreaDataSet.filter((d) => d.year >= 2009);
     var accesors = [
-      { name: "EPS", accessor: (d) => d.dilutedEPS },
+      { name: "dilutedEPS", accessor: (d) => d.dilutedEPS },
     ];
     var colors = ["#8044b5"];
     var icAreaChart = new AreaChart({
@@ -239,6 +350,23 @@ async function draw(symbol) {
     });
     icAreaChart.draw();
     mediator.push(icAreaChart);
+  } else{
+    let tmp = d3.select("#ic-areachart");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 455)
+        .attr("height", 50);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${455/2}px, ${50/2}px)`
+      )
+      .text("No IC Data Available");
   }
 
   /* IC Table */
@@ -289,11 +417,30 @@ async function draw(symbol) {
         endYear: endYear,
         mediator: mediator,
       },
-      icChart
+      icChart,
+      altChart=icAreaChart
     );
     mediator.push(icTable);
 
     icTable.draw();
+  }
+  else{
+    let tmp = d3.select("#ic-table");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 910)
+        .attr("height", 300);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${910/2}px, ${300/2}px)`
+      )
+      .text("No IC Data Available");
   }
 
   // await sleep(2000)
@@ -325,6 +472,23 @@ async function draw(symbol) {
     });
     mediator.push(bsChart);
     bsChart.draw();
+  }else{
+    let tmp = d3.select("#bs-chart");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 455)
+        .attr("height", 200);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${455/2}px, ${200/2}px)`
+      )
+      .text("No BS Data Available");
   }
   /* BS Table */
   if (isDataAvailable(bsTableRaw)) {
@@ -376,6 +540,24 @@ async function draw(symbol) {
 
     bsTable.draw();
   }
+  else{
+    let tmp = d3.select("#bs-table");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 910)
+        .attr("height", 200);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${910/2}px, ${200/2}px)`
+      )
+      .text("No BS Data Available");
+  }
   // await sleep(2000)
   // icChart.deSplitData()
 
@@ -414,6 +596,23 @@ async function draw(symbol) {
     });
     csChart.draw();
     mediator.push(csChart);
+  }else{
+    let tmp = d3.select("#cs-chart");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 455)
+        .attr("height", 200);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${455/2}px, ${200/2}px)`
+      )
+      .text("No CS Data Available");
   }
 
   /* CS Table */
@@ -460,6 +659,23 @@ async function draw(symbol) {
     mediator.push(csTable);
 
     csTable.draw();
+  }else{
+    let tmp = d3.select("#cs-table");
+    tmp.selectAll("*").remove();
+    let empty = tmp.append("svg")
+        .attr("width", 910)
+        .attr("height", 200);
+    empty.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "gray");
+    empty.append("text")
+      .attr("text-anchor", "middle")
+      .style(
+        "transform",
+        `translate(${910/2}px, ${200/2}px)`
+      )
+      .text("No CS Data Available");
   }
 
   /* ETC */
@@ -467,14 +683,14 @@ async function draw(symbol) {
   // await sleep(2000)
   // icChart.splitData()
 }
+
 async function main() {
-  drawInfo("ADVANC.bk");
-  draw("ADVANC.bk");
+  drawInfo("AAPL");
+  draw("AAPL");
   
   $("form").submit(function (e) {
     e.preventDefault();
     var symbol = $("#symbolSearch").val()
-    drawInfo(symbol);
     draw(symbol)
   });
 }
