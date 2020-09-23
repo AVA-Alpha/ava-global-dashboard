@@ -39,7 +39,9 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
     
     // console.log("info.js: priceRawData",symbol.split(".")[0],exchange, priceRawData);
     // console.log("info.js: infoDataSet",symbol.split(".")[0],exchange, infoDataSet);
-    // console.log("info.js: scoreFromAPI",symbol.split(".")[0],exchange, scoreFromAPI);
+    console.log("info.js: scoreFromAPI", scoreFromAPI);
+    
+
     
     /*UPDATE INFO*/
     if (
@@ -122,13 +124,20 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
     }
     
 
-    var AVAScores = (factorScores[0]* 10).toFixed(2)
-    var icrScore =  (factorScores[1]* 100).toFixed(0)
-    var laScore =   (factorScores[2]* 100).toFixed(0)
-    var ocqScore =  (factorScores[3]* 100).toFixed(0)
-    var revScore =  (factorScores[4]* 100).toFixed(0)
-    var valuationScore = (factorScores[5]* 100).toFixed(0)
     
+    var icrScore =  (factorScores[0]* 100).toFixed(0)
+    var laScore =   (factorScores[1]* 100).toFixed(0)
+    var ocqScore =  (factorScores[2]* 100).toFixed(0)
+    var revScore =  (factorScores[3]* 100).toFixed(0)
+    var valuationScore = (factorScores[4]* 100).toFixed(0)
+//     var AVAScores = (factorScores[0]* 10).toFixed(2)
+    var AVAScores = (((factorScores[0]*0.25)+
+                      (factorScores[1]*0.15)+
+                      (factorScores[2]*0.20)+
+                      (factorScores[3]*0.15)+
+                      (factorScores[4]*0.25)
+                     )*10).toFixed(2)
+        
     console.log("info.js: AVAScore", AVAScores);
     
 

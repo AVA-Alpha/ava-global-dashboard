@@ -212,7 +212,6 @@ async function draw(symbol) {
   }
   
   
-
   document.getElementById("content").style.display = "block";
   document.getElementById("loader").style.display = "none";
 
@@ -220,6 +219,7 @@ async function draw(symbol) {
 
   /* Price */
   // if (isDataAvailable(priceRawData)) {
+  console.log(priceRawData)
   if(priceRawData!=null) {
     var priceDataset = [];
     // priceRawData = priceRawData["data"];
