@@ -60,7 +60,13 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
         var description = infoDataSet["data"]["description"];
         var splitDesc = description.split(".");
         var exchange = infoDataSet["data"]["exchange"].split(" ")[0];
-        var ticker = infoDataSet["data"]["ticker"];
+        
+        if (infoDataSet["data"]["ticker"].includes(".")) {
+            var ticker = infoDataSet["data"]["ticker"].split(".")[0];
+        } else {
+            var ticker = infoDataSet["data"]["ticker"];
+        }
+        
         var currency = infoDataSet["data"]["currency"];
         var name = infoDataSet["data"]["name"];
         var sector = infoDataSet["data"]["gsector"];

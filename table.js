@@ -73,6 +73,8 @@ class Table {
         d[i]["growth"] = (d[i]["data"] - d[i - 1]["data"] ) / Math.abs(d[i - 1]["data"]);
       }
     });
+
+    
     this.tbody.forEach((d) => {
       body
         .append("tr")
@@ -83,7 +85,7 @@ class Table {
         .text(function (x) {
           if (isNumber(x["data"])) {
             if (x["data"] >= 0) {
-              return d3.format(",.2s")(x["data"]);
+              return d3.format(",.3s")(x["data"]);
             }
             if (x["data"] < 0) {
               return "(" + d3.format(",.2s")(Math.abs(x["data"])) + ")";

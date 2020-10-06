@@ -144,7 +144,7 @@ async function draw(symbol) {
   );
   
   let promiseScore = d3.json(
-      `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
+      `http://18.141.209.89:1324/api/find?expert=yong&tag=3.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
       {
           headers: new Headers({
               Authorization: authorizationToken,
@@ -235,7 +235,7 @@ async function draw(symbol) {
       (d) =>
         d3.timeParse("%s")(d.unixtime).getFullYear() >=
           startYear.getFullYear() &&
-        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()-1
+        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()
     );
 
     var accesors = [
