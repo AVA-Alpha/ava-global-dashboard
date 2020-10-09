@@ -2,47 +2,11 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
     console.log(`drawing info ${symbol}`);
     if (symbol.includes(".")) {
         var exchange = symbol.split(".")[1];
+        var tmp_sufix = exchange.toString().toUpperCase()
     } else {
         var exchange = "US";
     }
-
-    // var rootUrl = "https://api.avantis.app";
-    // var authorizationToken =
-    //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4OTM0NTYwMDAsInVzZXJuYW1lIjoieW9ydCJ9.GGYlZFvQfYJTT3VU6owQXImwD3tsO9HICMG83sgSPYU";
-
-    // let promisepriceRawData = d3.csv(
-    // `http://18.141.209.89:8080/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
-    // );
-
-    // let promiseInfoDataSet = d3.json(
-    //     `${rootUrl}/api/profile?symbol=${symbol}&exchange=${exchange}`,
-    //     {
-    //         headers: new Headers({
-    //             Authorization: authorizationToken,
-    //         }),
-    //     }
-    // );
-    
-    // let promiseScore = d3.json(
-    //     `http://18.141.209.89:1324/api/find?expert=yong&tag=2.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
-    //     {
-    //         headers: new Headers({
-    //             Authorization: authorizationToken,
-    //         }),
-    //     }
-    // );
-
-
-    // let priceRawData = await promisepriceRawData;
-    // let infoDataSet = await promiseInfoDataSet;
-    // let scoreFromAPI = await promiseScore;
-    
-    // console.log("info.js: priceRawData",symbol.split(".")[0],exchange, priceRawData);
-    // console.log("info.js: infoDataSet",symbol.split(".")[0],exchange, infoDataSet);
     console.log("info.js: scoreFromAPI", scoreFromAPI);
-    
-
-    
     /*UPDATE INFO*/
     if (
         infoDataSet["data"] === null ||
@@ -60,25 +24,40 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
         var description = infoDataSet["data"]["description"];
         var splitDesc = description.split(".");
         var exchange = infoDataSet["data"]["exchange"].split(" ")[0];
-        
+
         if (infoDataSet["data"]["ticker"].includes(".")) {
             var ticker = infoDataSet["data"]["ticker"].split(".")[0];
         } else {
             var ticker = infoDataSet["data"]["ticker"];
         }
-        
+
         var currency = infoDataSet["data"]["currency"];
         var name = infoDataSet["data"]["name"];
         var sector = infoDataSet["data"]["gsector"];
     }
+
+    var exhange_objs = {
+        AS: "AMSTERDAM", AT: "ATHENS", AX: "AUSTRALIA", BA: "BUENOS AIRES", BC: "COLOMBIA", BD: "BUDAPEST", BE: "BERLIN", BK: "THAILAND", BO: "BOMBAY", BR: "BRUSSEL", CN: "CANADA", CO: "COPENHAGEN", CR: "CARACAS", DB: "DUBAI", DE: "XETRA", DU: "DUESSELDORF", F: "DEUTSCHE", HE: "HELSINKI", HK: "HONGKONG", HM: "HAMBURG", IC: "ICELAND", IR: "IRISH", IS: "ISTANBUL", JK: "INDONESIA", JO: "JOHANNESBURG", KL: "MALASIA", KQ: "KOSDAQ", KS: "KOREA", L: "LONDON", LS: "LISBON", MC: "MADRID", ME: "MOSCOW", MI: "ITALY", MU: "MUENCHEN", MX: "MEXICAN", NE: "NEO", NS: "INDIA", NZ: "NEWZEALAND", OL: "OSLO", PA: "PARIS", PR: "PRAGUE", QA: "QATAR", RG: "RIGA", SA: "BRAZIL", SG: "BOERSE", SI: "SINGAPORE", SN: "SANTIAGO", SR: "SAUDI", SS: "SHANGHAI", ST: "NORDIC", SW: "SWISS", SZ: "SHENZHEN", T: "TOKYO", TA: "TELAVIV", TL: "TALLINN", TO: "TORONTO", TW: "TAIWAN", V: "TSX", VI: "VIENNA", VN: "VIETNAM", VS: "VILNIUS", WA: "WARSAW"
+    };
+    if (symbol.includes(".")) {
+//         console.log("info.js: SUFFIX: ", tmp_sufix);
+        //console.log("info.js: EXCHANGE: ", exhange_objs[tmp_sufix]);
+        exchange = exhange_objs[tmp_sufix]
+    }
+    
+    if (exchange == 'NEW') {
+        exchange = 'NYSE'
+    }
+
+
     d3.select("#information-currency").html(currency);
-    d3.select("#information-symbol").html(exchange + ":" + ticker);
+    d3.select("#information-symbol").html(exchange + ": " + ticker);
     d3.select("#information-name").html(name);
     d3.select("#information-sector").html(sector);
     d3.select("#information-desc").html(
         splitDesc[0] + splitDesc[1] + splitDesc[2]
     );
-    
+
     /*UPDATE PRICE*/
     if (
         priceRawData == null ||
@@ -96,7 +75,7 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
         var chg = (closeToday - closePrev).toFixed(2);
         var percentChg = ((chg / closePrev) * 100).toFixed(2);
     }
-    
+
     d3.select("#information-price").html(closeToday);
     if (chg >= 0) {
         $("#information-chg-arrow")
@@ -109,43 +88,43 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
             .addClass("information-downarrow");
         d3.select("#information-chg").html(chg + "|" + percentChg + "%");
     }
-    
+
 
     /*UPDATE SCORE*/
-    
-    if (scoreFromAPI[0] != null){
+
+    if (scoreFromAPI[0] != null) {
         var factorNames = scoreFromAPI[0].Data[0].Value;
         var factorScores = scoreFromAPI[0].Data[1].Value;
 
         console.log("info.js: factorNames", factorNames);
         console.log("info.js: factorScores", factorScores);
-        
+
     }
-    else{
-        var factorNames = ['N/A','N/A','N/A','N/A','N/A','N/A'];
-        var factorScores = [0,0,0,0,0,0];
+    else {
+        var factorNames = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'];
+        var factorScores = [0, 0, 0, 0, 0, 0];
 
         console.log("info.js: factorNames", factorNames);
         console.log("info.js: factorScores", factorScores);
     }
-    
 
-    
-    var icrScore =  (factorScores[0]* 100).toFixed(0)
-    var laScore =   (factorScores[1]* 100).toFixed(0)
-    var ocqScore =  (factorScores[2]* 100).toFixed(0)
-    var revScore =  (factorScores[3]* 100).toFixed(0)
-    var valuationScore = (factorScores[4]* 100).toFixed(0)
-//     var AVAScores = (factorScores[0]* 10).toFixed(2)
-    var AVAScores = (((factorScores[0]*0.25)+
-                      (factorScores[1]*0.15)+
-                      (factorScores[2]*0.20)+
-                      (factorScores[3]*0.15)+
-                      (factorScores[4]*0.25)
-                     )*10).toFixed(2)
-        
+
+
+    var icrScore = (factorScores[0] * 100).toFixed(0)
+    var laScore = (factorScores[1] * 100).toFixed(0)
+    var ocqScore = (factorScores[2] * 100).toFixed(0)
+    var revScore = (factorScores[3] * 100).toFixed(0)
+    var valuationScore = (factorScores[4] * 100).toFixed(0)
+    //     var AVAScores = (factorScores[0]* 10).toFixed(2)
+    var AVAScores = (((factorScores[0] * 0.25) +
+        (factorScores[1] * 0.15) +
+        (factorScores[2] * 0.20) +
+        (factorScores[3] * 0.15) +
+        (factorScores[4] * 0.25)
+    ) * 10).toFixed(2)
+
     console.log("info.js: AVAScore", AVAScores);
-    
+
 
 
 

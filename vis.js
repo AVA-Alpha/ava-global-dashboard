@@ -284,10 +284,10 @@ async function draw(symbol) {
     const dateParser = d3.timeParse("%Y");
 
     var accesors = [
-      { name: "revenue", accessor: (d) => d.revenue },
-      { name: "grossProfit", accessor: (d) => d.grossProfit },
-      { name: "netIncomeBeforeTaxes", accessor: (d) => d.netIncomeBeforeTaxes },
-      { name: "netIncome", accessor: (d) => d.netIncome },
+      { name: "revenue", accessor: (d) => d.revenue*1e6 },
+      { name: "grossProfit", accessor: (d) => d.grossProfit*1e6 },
+      { name: "netIncomeBeforeTaxes", accessor: (d) => d.netIncomeBeforeTaxes*1e6 },
+      { name: "netIncome", accessor: (d) => d.netIncome*1e6 },
     ];
 
     var icChart = new SteppedLineChart({
@@ -380,16 +380,16 @@ async function draw(symbol) {
     thead = [""].concat(icTableDataset.map((d) => d.year));
     tbody = [
       ["Revenue"]
-        .concat(icTableDataset.map((d) => d.revenue))
+        .concat(icTableDataset.map((d) => d.revenue*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Gross Profit"]
-        .concat(icTableDataset.map((d) => d.grossProfit))
+        .concat(icTableDataset.map((d) => d.grossProfit*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["EBT"]
-        .concat(icTableDataset.map((d) => d.netIncomeBeforeTaxes))
+        .concat(icTableDataset.map((d) => d.netIncomeBeforeTaxes*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Net Income"]
-        .concat(icTableDataset.map((d) => d.netIncome))
+        .concat(icTableDataset.map((d) => d.netIncome*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["EPS"]
         .concat(icTableDataset.map((d) => d.dilutedEPS))
@@ -451,9 +451,9 @@ async function draw(symbol) {
     bsChartDataset = bsChartRaw["data"]["financials"];
 
     var accesors = [
-      { name: "totalAssets", accessor: (d) => d.totalAssets },
-      { name: "totalLiabilities", accessor: (d) => d.totalLiabilities },
-      { name: "totalEquity", accessor: (d) => d.totalEquity },
+      { name: "totalAssets", accessor: (d) => d.totalAssets*1e6 },
+      { name: "totalLiabilities", accessor: (d) => d.totalLiabilities*1e6 },
+      { name: "totalEquity", accessor: (d) => d.totalEquity*1e6 },
       //{ name: "cash", accessor: (d) => d.cash },
     ];
 
@@ -501,13 +501,13 @@ async function draw(symbol) {
     thead = [""].concat(bsTabledataset.map((d) => d.year));
     tbody = [
       ["Total Assets"]
-        .concat(bsTabledataset.map((d) => d.totalAssets))
+        .concat(bsTabledataset.map((d) => d.totalAssets*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Total Liability"]
-        .concat(bsTabledataset.map((d) => d.totalLiabilities))
+        .concat(bsTabledataset.map((d) => d.totalLiabilities*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Total Equity"]
-        .concat(bsTabledataset.map((d) => d.totalEquity))
+        .concat(bsTabledataset.map((d) => d.totalEquity*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       // ["Cash"]
       //   .concat(bsTabledataset.map((d) => d.cash))
@@ -568,15 +568,15 @@ async function draw(symbol) {
     var accesors = [
       {
         name: "cashfromOperatingActivities",
-        accessor: (d) => d.cashfromOperatingActivities,
+        accessor: (d) => d.cashfromOperatingActivities*1e6,
       },
       {
         name: "cashfromFinancingActivities",
-        accessor: (d) => d.cashfromFinancingActivities,
+        accessor: (d) => d.cashfromFinancingActivities*1e6,
       },
       {
         name: "cashfromInvestingActivities",
-        accessor: (d) => d.cashfromInvestingActivities,
+        accessor: (d) => d.cashfromInvestingActivities*1e6,
       },
     ];
     var colors = ["#b8dee6", "#757de4", "#8044b5"];
@@ -625,13 +625,13 @@ async function draw(symbol) {
     thead = [""].concat(csTableDataSet.map((d) => d.year));
     tbody = [
       ["Operating"]
-        .concat(csTableDataSet.map((d) => d.cashfromOperatingActivities))
+        .concat(csTableDataSet.map((d) => d.cashfromOperatingActivities*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Financing"]
-        .concat(csTableDataSet.map((d) => d.cashfromFinancingActivities))
+        .concat(csTableDataSet.map((d) => d.cashfromFinancingActivities*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       ["Investing"]
-        .concat(csTableDataSet.map((d) => d.cashfromInvestingActivities))
+        .concat(csTableDataSet.map((d) => d.cashfromInvestingActivities*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
     ];
     var classesDict = {

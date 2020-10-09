@@ -89,7 +89,7 @@ class PriceChart {
         const xAxisGenerator = d3.axisTop()
             .scale(this.xScale)
             .tickFormat(function (d){
-                return d3.format('02d')(d.getFullYear()%1000)
+                return "'" + d3.format('02d')(d.getFullYear()%1000)
             })
 
         // const xAxis = this.bounds.select(".x-axis")
