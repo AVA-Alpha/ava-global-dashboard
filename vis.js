@@ -235,7 +235,7 @@ async function draw(symbol) {
       (d) =>
         d3.timeParse("%s")(d.unixtime).getFullYear() >=
           startYear.getFullYear() &&
-        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear()
+        d3.timeParse("%s")(d.unixtime).getFullYear() <= endYear.getFullYear() 
     );
 
     var accesors = [
@@ -245,7 +245,7 @@ async function draw(symbol) {
     var priceChart = new PriceChart({
       element: "#price-chart",
       dimensions: {
-        width: 455,
+        width: 455+24, // add additional year
         height: 284,
       },
       dataset: priceDataset,

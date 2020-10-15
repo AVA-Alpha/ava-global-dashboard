@@ -26,7 +26,7 @@ class PriceChart {
             height: this.inputDimensions.height,
             margin: {
                 top: 50, //15
-                right: 15, //15
+                right: 39, //15 additional year space
                 bottom: 15, //40 
                 left: 15, //60
             },
@@ -59,6 +59,9 @@ class PriceChart {
             .domain(d3.extent(this.dataset, this.yAccessor))
             .range([this.dimensions.boundedHeight, 0])
             .nice()
+        console.log(this.dataset)
+        console.log(this.yScale.domain())
+        console.log(this.yScale.range())
 
 
         this.xScale = d3.scaleTime()
