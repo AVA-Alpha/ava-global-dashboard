@@ -29,7 +29,7 @@ async function draw(symbol) {
 
   /* Mediator */
   var mediator = new Mediator();
-  var rootUrl = "https://api.avantis.app";
+  var rootUrl = "https://notredame.alpha.lab.ai";
   if (symbol.includes(".")) {
     var exchange = symbol.split(".")[1];
   } else {

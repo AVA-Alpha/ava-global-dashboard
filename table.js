@@ -90,14 +90,14 @@ class Table {
                 .append("td")
                 .text(function (x) {
                     if (isNumber(x["data"])) {
-                        return locale_format.format(".3s")(x["data"]).replace(/G/, "B")
-                        /*
-                        if (x["data"] >= 0) {
-                            return d3.format(",.2s")(x["data"] * 1e0);
+                        var formatted_num = locale_format.format(".3s")(x["data"]).replace(/G/, "B")
+                        
+                        if (formatted_num.includes('m') == true){
+                            return x["data"]
                         }
-                        if (x["data"] < 0) {
-                            return "(" + d3.format(",.2s")(Math.abs(x["data"] * 1e0)) + ")";
-                        }*/
+                        else{
+                            return formatted_num
+                        }
                     }
                     console.log(x["data"])
                     if (x["data"] == null) {
