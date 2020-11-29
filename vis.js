@@ -65,9 +65,17 @@ async function draw(symbol) {
   // let promisecsChartDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
   // let promisecsTableDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
 
+  let promiseUnicornSymbol = d3.text(`https://mka-api.alpha.lab.ai/finhub_to_unicorn?symbol=${symbol}&exchange=${exchange}`);
+  try {
+    var unicornSymbol = await promiseUnicornSymbol;
+    unicornSymbol = unicornSymbol.slice(1,-1);
+  } catch (e) {
+    console.log(e)
+  }
+  
   let promisepriceRawData = d3.csv(
     //`${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
-    `https://cors-container.herokuapp.com/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
+    `https://cors-container.herokuapp.com/https://eodhistoricaldata.com/api/eod/${unicornSymbol}?api_token=5d66a65679a7c9.784184268264`
     // {
     //   headers: new Headers({
     //     Authorization: authorizationToken,
