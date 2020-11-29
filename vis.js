@@ -508,13 +508,13 @@ async function draw(symbol) {
     });
     thead = [""].concat(bsTabledataset.map((d) => d.year));
     tbody = [
-      ["Total Assets"]
+      ["Assets"]
         .concat(bsTabledataset.map((d) => d.totalAssets*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
-      ["Total Liability"]
+      ["Liability"]
         .concat(bsTabledataset.map((d) => d.totalLiabilities*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
-      ["Total Equity"]
+      ["Equity"]
         .concat(bsTabledataset.map((d) => d.totalEquity*1e6))
         .map((d, i) => ({ data: d, year: thead[i] })),
       // ["Cash"]
@@ -522,9 +522,9 @@ async function draw(symbol) {
       //   .map((d, i) => ({ data: d, year: thead[i] })),
     ];
     var classesDict = {
-      "Total Assets": "totalAssets",
-      "Total Liability": "totalLiabilities",
-      "Total Equity": "totalEquity",
+      "Assets": "totalAssets",
+      "Liability": "totalLiabilities",
+      "Equity": "totalEquity",
       //Cash: "cash",
     };
     var bsTable = new Table(
