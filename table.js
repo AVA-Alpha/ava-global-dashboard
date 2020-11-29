@@ -127,7 +127,6 @@ class Table {
                     }
                     return "#444646";
                 })
-                .style("height", 75)
             //.style("background", column => column.background && column.background(d))
             //.style("transform", column => column.transform && column.transform(d))
         });
