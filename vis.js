@@ -67,7 +67,7 @@ async function draw(symbol) {
 
   let promisepriceRawData = d3.csv(
     //`${rootUrl}/api/candle?symbol=${symbol}&exchange=${exchange}`,
-    `https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
+    `https://cors-container.herokuapp.com/https://eodhistoricaldata.com/api/eod/${symbol}?api_token=5d66a65679a7c9.784184268264`
     // {
     //   headers: new Headers({
     //     Authorization: authorizationToken,
