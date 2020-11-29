@@ -65,7 +65,7 @@ async function draw(symbol) {
   // let promisecsChartDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
   // let promisecsTableDataSet = d3.json(`https://finnhub.io/api/v1/stock/financials?symbol=${symbol}&statement=cf&freq=annual&token=brah5r7rh5rbgnjptnug`)
 
-  let promiseUnicornSymbol = d3.text(`https://mka-api.alpha.lab.ai/finhub_to_unicorn?symbol=${symbol.split(".")[1]}&exchange=${exchange}`);
+  let promiseUnicornSymbol = d3.text(`https://mka-api.alpha.lab.ai/finhub_to_unicorn?symbol=${symbol.split(".")[0]}&exchange=${exchange}`);
   try {
     var unicornSymbol = await promiseUnicornSymbol;
     unicornSymbol = unicornSymbol.slice(1,-1);
