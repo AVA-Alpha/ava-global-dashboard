@@ -144,7 +144,7 @@ async function draw(symbol) {
   );
   
   let promiseScore = d3.json(
-      `http://18.141.209.89:1324/api/find?expert=yong&tag=3.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
+      `${rootUrl}/api/find?expert=yong&tag=3.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
       {
           headers: new Headers({
               Authorization: authorizationToken,
