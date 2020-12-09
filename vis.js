@@ -29,7 +29,9 @@ async function draw(symbol) {
 
   /* Mediator */
   var mediator = new Mediator();
-  var rootUrl = "https://notredame2.alpha.lab.ai";
+  var rootUrl = "https://notredame.alpha.lab.ai";
+  var rootScoreUrl = "https://notredame2.alpha.lab.ai";
+    
   if (symbol.includes(".")) {
     var exchange = symbol.split(".")[1];
   } else {
@@ -152,7 +154,7 @@ async function draw(symbol) {
   );
   
   let promiseScore = d3.json(
-      `${rootUrl}/api/find?expert=yong&tag=3.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
+      `${rootScoreUrl}/api/find?expert=yong&tag=3.0&symbol=${symbol.split(".")[0]}&exchange=${exchange}`,
       {
           headers: new Headers({
               Authorization: authorizationToken,
