@@ -67,7 +67,7 @@ class PriceChart {
         this.xScale = d3.scaleTime()
             //.domain(d3.extent(this.dataset, xAccessor))
             // .domain(d3.extent(this.dataset, this.xAccessor))
-            .domain([this.startYear, this.endYear])
+            .domain([this.startYear, this.endYear + 1])
             .range([0, this.dimensions.boundedWidth])
 
 
