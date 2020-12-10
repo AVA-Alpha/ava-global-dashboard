@@ -223,7 +223,7 @@ async function draw(symbol) {
   var tmp_icChartdataset = icChartRaw["data"]["financials"];
   var tmp_xAccessor = (d) => d3.timeParse("%Y")(d.year);
   var endYear = d3.max(tmp_icChartdataset, tmp_xAccessor);
-  endYear.setFullYear(endYear.getFullYear());
+  endYear.setFullYear(endYear.getFullYear() + 1);
   var startYear = d3.max(tmp_icChartdataset, tmp_xAccessor);
   startYear.setFullYear(startYear.getFullYear() - nbars);
   console.log("startyear = " + startYear);
