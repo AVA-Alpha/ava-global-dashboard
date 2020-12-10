@@ -22,10 +22,10 @@ async function draw(symbol) {
       rowHeight: "20px",
     },
   };
-
+  var nbars = 10
   const yearParser = d3.timeParse("%Y");
-  const startYear = yearParser(2009);
-  const endYear = yearParser(2020);
+  // const startYear = yearParser(2009);
+  // const endYear = yearParser(2020);
 
   /* Mediator */
   var mediator = new Mediator();
@@ -220,6 +220,12 @@ async function draw(symbol) {
   } catch (e) {
     console.log(e)
   }
+  var tmp_icChartdataset = icChartRaw["data"]["financials"];
+  var tmp_xAccessor = (d) => d3.timeParse("%Y")(d.year);
+  var endYear = d3.max(tmp_icChartdataset, tmp_xAccessor);
+  endYear.setFullYear(endYear.getFullYear());
+  var startYear = d3.max(tmp_icChartdataset, tmp_xAccessor);
+  startYear.setFullYear(startYear.getFullYear() - nbars - 1);
   
   
   document.getElementById("content").style.display = "block";
