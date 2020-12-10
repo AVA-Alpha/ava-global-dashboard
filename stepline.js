@@ -8,9 +8,6 @@ class SteppedLineChart {
     this.accesors = opts.accesors;
     this.inputDimensions = opts.dimensions;
     this.nbars = opts.nbars;
-    
-    this.startYear = opts.startYear
-    this.endYear = opts.endYear
 
     // add for visualization
     this.dataset.unshift(Object.assign({}, this.dataset[0]));
@@ -77,14 +74,14 @@ class SteppedLineChart {
       .range([this.dimensions.boundedHeight, 0]);
     //.nice()
 
-//     this.latestYear = d3.max(this.dataset, this.xAccessor);
-//     this.latestYear.setFullYear(this.latestYear.getFullYear());
-//     this.firstYear = d3.max(this.dataset, this.xAccessor);
-//     this.firstYear.setFullYear(this.firstYear.getFullYear() - this.nbars - 1);
+    this.latestYear = d3.max(this.dataset, this.xAccessor);
+    this.latestYear.setFullYear(this.latestYear.getFullYear());
+    this.firstYear = d3.max(this.dataset, this.xAccessor);
+    this.firstYear.setFullYear(this.firstYear.getFullYear() - this.nbars - 1);
     this.xScale = d3
       .scaleTime()
       //.domain(d3.extent(this.dataset, xAccessor))
-      .domain([this.startYear, this.endYear])
+      .domain([this.firstYear, this.latestYear])
       .range([0, this.dimensions.boundedWidth]);
 
     // 5. Draw data
