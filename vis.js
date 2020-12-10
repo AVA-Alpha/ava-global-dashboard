@@ -703,6 +703,8 @@ async function draw(symbol) {
 }
 
 async function main() {
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("content").style.display = "none";
   drawInfo("AAPL");
   draw("AAPL");
   
