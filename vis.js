@@ -220,6 +220,12 @@ async function draw(symbol) {
   } catch (e) {
     console.log(e)
   }
+  
+  if(icChartRaw["data"]["financials"] == null) {
+    alert('nodata')
+    document.getElementById("content").style.display = "none";
+    document.getElementById("loader").style.display = "none";
+  }
   var tmp_icChartdataset = icChartRaw["data"]["financials"];
   var tmp_xAccessor = (d) => d3.timeParse("%Y")(d.year);
   var endYear = d3.max(tmp_icChartdataset, tmp_xAccessor);
