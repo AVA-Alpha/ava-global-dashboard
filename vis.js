@@ -223,7 +223,7 @@ async function draw(symbol) {
   
   if(icChartRaw["data"]["financials"] == null) {
     alert('nodata')
-    document.getElementById("content").style.display = "none";
+    document.getElementById("content").style.display = "block";
     document.getElementById("loader").style.display = "none";
   }
   var tmp_icChartdataset = icChartRaw["data"]["financials"];
