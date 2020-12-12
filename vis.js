@@ -222,9 +222,9 @@ async function draw(symbol) {
   }
   
   if(icChartRaw["data"]["financials"] == null) {
-    alert('nodata')
     document.getElementById("content").style.display = "block";
     document.getElementById("loader").style.display = "none";
+    alert("Sorry, " + symbol + "data is not ready");
   }
   var tmp_icChartdataset = icChartRaw["data"]["financials"];
   var tmp_xAccessor = (d) => d3.timeParse("%Y")(d.year);
