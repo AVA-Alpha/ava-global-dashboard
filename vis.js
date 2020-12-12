@@ -226,6 +226,7 @@ async function draw(symbol) {
     document.getElementById("loader").style.display = "none";
     alert("Sorry, " + symbol + " data is not ready");
     $('.searchbox').val(null).trigger("change"); 
+    return;
   }
   var tmp_icChartdataset = icChartRaw["data"]["financials"];
   var tmp_xAccessor = (d) => d3.timeParse("%Y")(d.year);
