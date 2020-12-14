@@ -16,7 +16,8 @@ class Table {
         );
         this.dataset = raw["financials"];
 
-        this.dataset = this.dataset.filter((d) => d.year >= (d3.max(this.dataset, (d) => d.year) - 10) );
+        this.dataset = this.dataset.filter((d) => d.year >= 2010 );
+        console.log("d3.max for table is " + (d3.max(this.dataset, (d) => d.year) - 10) ) 
         this.dataset.sort(function (a, b) {
             return a.year - b.year;
         });
