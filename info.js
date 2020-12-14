@@ -40,11 +40,11 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
         AS: "AMSTERDAM", AT: "ATHENS", AX: "AUSTRALIA", BA: "BUENOS AIRES", BC: "COLOMBIA", BD: "BUDAPEST", BE: "BERLIN", BK: "THAILAND", BO: "BOMBAY", BR: "BRUSSEL", CN: "CANADA", CO: "COPENHAGEN", CR: "CARACAS", DB: "DUBAI", DE: "XETRA", DU: "DUESSELDORF", F: "DEUTSCHE", HE: "HELSINKI", HK: "HONGKONG", HM: "HAMBURG", IC: "ICELAND", IR: "IRISH", IS: "ISTANBUL", JK: "INDONESIA", JO: "JOHANNESBURG", KL: "MALASIA", KQ: "KOSDAQ", KS: "KOREA", L: "LONDON", LS: "LISBON", MC: "MADRID", ME: "MOSCOW", MI: "ITALY", MU: "MUENCHEN", MX: "MEXICAN", NE: "NEO", NS: "INDIA", NZ: "NEWZEALAND", OL: "OSLO", PA: "PARIS", PR: "PRAGUE", QA: "QATAR", RG: "RIGA", SA: "BRAZIL", SG: "BOERSE", SI: "SINGAPORE", SN: "SANTIAGO", SR: "SAUDI", SS: "SHANGHAI", ST: "NORDIC", SW: "SWISS", SZ: "SHENZHEN", T: "TOKYO", TA: "TELAVIV", TL: "TALLINN", TO: "TORONTO", TW: "TAIWAN", V: "TSX", VI: "VIENNA", VN: "VIETNAM", VS: "VILNIUS", WA: "WARSAW"
     };
     if (symbol.includes(".")) {
-//         console.log("info.js: SUFFIX: ", tmp_sufix);
+        //         console.log("info.js: SUFFIX: ", tmp_sufix);
         //console.log("info.js: EXCHANGE: ", exhange_objs[tmp_sufix]);
         exchange = exhange_objs[tmp_sufix]
     }
-    
+
     if (exchange == 'NEW') {
         exchange = 'NYSE'
     }
@@ -76,17 +76,27 @@ async function drawInfo(symbol, priceRawData, infoDataSet, scoreFromAPI) {
         var percentChg = ((chg / closePrev) * 100).toFixed(2);
     }
 
-    d3.select("#information-price").html(closeToday);
+    var float_price = parseFloat(closeToday).toFixed(2);
+    if (float_price >= 10000) {
+        var price_withCommas = Number(float_price).toLocaleString('en', { minimumFractionDigits: 0 });
+    }
+    else {
+        var price_withCommas = Number(float_price).toLocaleString('en', { minimumFractionDigits: 2 });
+    }
+
+    d3.select("#information-price").html(price_withCommas);
     if (chg >= 0) {
-        $("#information-chg-arrow")
-            .removeClass("information-downarrow")
-            .addClass("information-uparrow");
-        d3.select("#information-chg").html("+" + chg + "|" + percentChg + "%");
+        d3.select("#information-chg").html('&#9650; ' + "+" + chg + " (+" + percentChg + "%)");
+        document.getElementById("information-chg").style.color = "green";
+        // $("#information-chg-arrow")
+        //     .removeClass("information-downarrow")
+        //     .addClass("information-uparrow");
     } else {
-        $("#information-chg-arrow")
-            .removeClass("information-uparrow")
-            .addClass("information-downarrow");
-        d3.select("#information-chg").html(chg + "|" + percentChg + "%");
+        d3.select("#information-chg").html('&#9660; ' + chg + " (" + percentChg + "%)");
+        document.getElementById("information-chg").style.color = "red";
+        // $("#information-chg-arrow")
+        //     .removeClass("information-uparrow")
+        //     .addClass("information-downarrow");
     }
 
 
