@@ -355,8 +355,7 @@ async function draw(symbol) {
   /* IC EPS */
   if (isDataAvailable(icAreaDataSet)) {
     icAreaDataSet = icAreaDataSet["data"]["financials"];
-    icAreaDataSet = icAreaDataSet.filter((d) => d.year >= 2010 );
-    console.log("d3.max = " + (d3.max(icAreaDataSet, (d) => d.year) - 10))
+    icAreaDataSet = icAreaDataSet.filter((d) => d.year >= (d3.max(icAreaDataSet, (d) => d.year) - 10) );
     var accesors = [
       { name: "dilutedEPS", accessor: (d) => d.dilutedEPS },
     ];
@@ -400,7 +399,7 @@ async function draw(symbol) {
   if (isDataAvailable(icTableraw)) {
     icTableDataset = icTableraw["data"]["financials"];
 
-    icTableDataset = icTableDataset.filter((d) => d.year >= 2009);
+    icTableDataset = icTableDataset.filter((d) => d.year >= (d3.max(icTableDataset, (d) => d.year) - 10));
     icTableDataset.sort(function (a, b) {
       return a.year - b.year;
     });
@@ -521,7 +520,7 @@ async function draw(symbol) {
   if (isDataAvailable(bsTableRaw)) {
     bsTabledataset = bsTableRaw["data"]["financials"];
 
-    bsTabledataset = bsTabledataset.filter((d) => d.year >= 2009);
+    bsTabledataset = bsTabledataset.filter((d) => d.year >= (d3.max(bsTabledataset, (d) => d.year) - 10));
     bsTabledataset.sort(function (a, b) {
       return a.year - b.year;
     });
@@ -645,7 +644,7 @@ async function draw(symbol) {
   /* CS Table */
   if (isDataAvailable(csTableDataSet)) {
     csTableDataSet = csTableDataSet["data"]["financials"];
-    csTableDataSet = csTableDataSet.filter((d) => d.year >= 2009);
+    csTableDataSet = csTableDataSet.filter((d) => d.year >= (d3.max(csTableDataSet, (d) => d.year) - 10));
     csTableDataSet.sort(function (a, b) {
       return a.year - b.year;
     });
