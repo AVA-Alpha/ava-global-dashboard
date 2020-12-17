@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Check IP after VPN connection
           command: |
-            ping 192.168.105.166
+            # ping 192.168.105.166
 
       - run:
           name: Run commands in our infrastructure
