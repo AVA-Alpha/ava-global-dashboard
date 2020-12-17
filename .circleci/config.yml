@@ -5,12 +5,14 @@ orbs:
   azure-acr: circleci/azure-acr@0.2.0
 
 jobs:
+
   build-and-publish-docker-image-to-acr:
-    - azure-acr/build-and-push-image:
-          login-server-name: alphacontainerregistry.azurecr.io
-          registry-name: alphacontainerregistry
-          repo: ava-global-dashboard
-          tag: $CIRCLE_TAG
+    steps:
+      - azure-acr/build-and-push-image:
+            login-server-name: alphacontainerregistry.azurecr.io
+            registry-name: alphacontainerregistry
+            repo: ava-global-dashboard
+            tag: $CIRCLE_TAG
   deploy:
     machine:
       image: ubuntu-1604:202004-01
