@@ -7,6 +7,8 @@ orbs:
 jobs:
 
   build-and-publish-docker-image-to-acr:
+    machine:
+      image: ubuntu-1604:202004-01
     steps:
       - azure-acr/build-and-push-image:
             login-server-name: alphacontainerregistry.azurecr.io
@@ -72,6 +74,7 @@ jobs:
 workflows:
   btd:
     jobs:
+      
       - build-and-publish-docker-image-to-acr:
           context: ACR_CONFIG
 
