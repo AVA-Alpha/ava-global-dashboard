@@ -2,8 +2,15 @@ version: 2.1
 
 orbs:
   kubernetes: circleci/kubernetes@0.11.2
+  azure-acr: circleci/azure-acr@0.2.0
 
 jobs:
+  build-and-publish-docker-image-to-acr:
+    - azure-acr/build-and-push-image:
+          login-server-name: alphacontainerregistry.azurecr.io
+          registry-name: alphacontainerregistry
+          repo: ava-global-dashboard
+          tag: $CIRCLE_TAG
   deploy:
     machine:
       image: ubuntu-1604:202004-01
@@ -63,5 +70,8 @@ jobs:
 workflows:
   btd:
     jobs:
+      - build-and-publish-docker-image-to-acr:
+        context: ACR_CONFIG
+
       - deploy:
-          context: VPN_CLIENT_CONFIG # has an env var called  MY_ENV_VAR
+          context: VPN_CLIENT_CONFIG 
