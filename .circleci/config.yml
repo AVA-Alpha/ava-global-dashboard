@@ -1,13 +1,53 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+
+jobs:
+  deploy:
+    machine:
+      image: ubuntu-1604:202004-01
+    steps:
+      - run:
+          name: Install OpenVPN
+          command: |
+            sudo apt-get update
+            sudo apt install apt-transport-https
+            sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
+            sudo apt-key add openvpn-repo-pkg-key.pub
+            sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-xenial.list
+            sudo apt update
+            sudo apt-get install openvpn3 -y
+            sudo apt-get install python3-pip
+            sudo pip3 install aenum
+            
+      - run:
+          name: VPN Setup
+          background: true
+          command: |
+            echo $VPN_CLIENT_CONFIG | base64 --decode > /tmp/config.ovpn
+            echo $VPN_PASSWORD | base64 --decode > /tmp/config.autoload
+            sudo openvpn3-autoload --directory /tmp
+
+      - run:
+          name: Wait for the connection to be established
+          command: sleep 30
+
+      - run:
+          name: Check IP after VPN connection
+          command: |
+            ping 192.168.105.166
+
+      - run:
+          name: Run commands in our infrastructure
+          command: |
+            # A command
+            # Another command
+            
+      - run:
+          name: Disconnect from OpenVPN
+          command: sudo killall openvpn || true
+          when: always
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  btd:
     jobs:
-      - welcome/run
+      - deploy:
+          context: VPN_CLIENT_CONFIG # has an env var called  MY_ENV_VAR
