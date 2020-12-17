@@ -46,9 +46,9 @@ jobs:
       - run: 
           name: Install kubectl
           command: |
-          - kubernetes/install-kubectl
-          kubectl version --client
-          
+            - kubernetes/install-kubectl
+            kubectl version --client
+
       - run:
           name: Disconnect from OpenVPN
           command: sudo killall openvpn || true
