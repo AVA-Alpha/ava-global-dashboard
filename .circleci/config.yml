@@ -71,7 +71,7 @@ workflows:
   btd:
     jobs:
       - build-and-publish-docker-image-to-acr:
-        context: ACR_CONFIG
+          context: ACR_CONFIG
 
       - deploy:
           context: VPN_CLIENT_CONFIG 
