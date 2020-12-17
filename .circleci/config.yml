@@ -43,10 +43,12 @@ jobs:
           command: |
             # A command
             # Another command
+      
+      - kubernetes/install-kubectl
+      
       - run: 
-          name: Install kubectl
+          name: Test kubectl
           command: |
-            - kubernetes/install-kubectl
             kubectl version --client
 
       - run:
